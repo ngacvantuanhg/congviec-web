@@ -79,9 +79,14 @@ app_password = "mat-khau-cua-ban"
     mục I và bảng chi tiết 9 cột (Chủ trì, Phối hợp, Thời hạn yêu cầu,
     Thời gian hoàn thành, Đánh giá tiến độ tự động so sánh 2 mốc thời
     gian, Tự đánh giá chất lượng, Loại việc) được tổng hợp tự động từ
-    dữ liệu công việc; mục II (đạo đức, lối sống) bạn tự viết trực tiếp
-    trên form vì đây là nội dung tường thuật cá nhân, phần mềm không tự
-    suy diễn thay bạn.
+    dữ liệu công việc; mục II (đạo đức, lối sống) bạn tự viết vì đây là
+    nội dung tường thuật cá nhân. Ngay trong tab có **bảng chỉnh nhanh**
+    để sửa Chủ trì/Phối hợp/Thời hạn yêu cầu/Tự đánh giá chất lượng/Loại
+    việc cho từng công việc trong kỳ mà không cần mở từng việc ở trang
+    Quản lý công việc — sửa xong bấm "Lưu các chỉnh sửa vào công việc".
+    Nếu một việc đã hoàn thành nhưng chưa ghi Thời hạn yêu cầu, phần
+    mềm mặc định coi là "Đúng thời gian yêu cầu" (không tự suy ra chậm
+    khi không có mốc để so sánh).
   - **Báo cáo tổng hợp theo kỳ**: giữ nguyên logic báo cáo tuần/tháng/quý/
     6 tháng/9 tháng/năm như bản desktop, kèm đề xuất xếp loại tự động.
 
@@ -110,6 +115,13 @@ ghi "Chậm so với yêu cầu".
 
 Tất cả các trường trên không bắt buộc khi nhập việc — để trống vẫn xuất
 báo cáo bình thường, chỉ là ô tương ứng sẽ để trống trong file Word.
+
+## Chức vụ, đơn vị đầy đủ
+
+Trang **Cài đặt** có thêm ô "Chức vụ, đơn vị đầy đủ" riêng cho Biểu 01
+(ví dụ: "Chuyên viên Văn phòng Ban Tuyên giáo và Dân vận Tỉnh ủy Tuyên
+Quang."), khác với ô "Chức vụ" ngắn gọn hiển thị ở thanh bên. Nếu chưa
+điền, Biểu 01 sẽ tạm dùng ô "Chức vụ" ngắn.
 
 **Nếu bạn đã tạo Supabase project trước khi có bản cập nhật này**, mở lại
 SQL Editor và chạy riêng khối `ALTER TABLE ... ADD COLUMN IF NOT EXISTS`
