@@ -240,16 +240,20 @@ def build_cbcc_report(ten, tasks_ky, nwt_rows, tuan_so, nam):
     return buf
 
 def _danh_gia_tien_do(t):
-    """So sánh Thời gian thực hiện hoàn thành với Thời hạn yêu cầu (thoi_han_vb)."""
-    han = t.get("thoi_han_vb")
+    """So sánh Thời gian thực hiện hoàn thành với Thời hạn yêu cầu (thoi_han_vb).
+    Nếu việc đã hoàn thành nhưng chưa ghi thời hạn, mặc định coi là đúng hạn
+    (không thể kết luận là chậm khi không có mốc để so sánh)."""
     kt = t.get("ngay_kt") if t.get("trang_thai") == "Hoàn thành" else None
-    if not han or not kt:
+    if not kt:
         return ""
+    han = t.get("thoi_han_vb")
+    if not han:
+        return "Đúng thời gian yêu cầu"
     try:
         d_han = datetime.date.fromisoformat(str(han))
         d_kt = datetime.date.fromisoformat(str(kt))
     except Exception:
-        return ""
+        return "Đúng thời gian yêu cầu"
     if d_kt < d_han:
         return "Vượt thời gian yêu cầu"
     if d_kt == d_han:
@@ -387,6 +391,7 @@ XL_MUC = ["Tự động (theo kết quả)", "Hoàn thành xuất sắc nhiệm 
 def ky_options():
     today = datetime.date.today()
     q = (today.month - 1) // 3 + 1
+    q_roman = {1: "I", 2: "II", 3: "III", 4: "IV"}[q]
     return {
         "Tuần": (today - datetime.timedelta(days=today.weekday()),
                  today - datetime.timedelta(days=today.weekday()) + datetime.timedelta(days=6),
@@ -396,7 +401,7 @@ def ky_options():
                   f"Tháng {today.month:02d}/{today.year}"),
         "Quý": (datetime.date(today.year, (q - 1) * 3 + 1, 1),
                 datetime.date(today.year, q * 3, calendar.monthrange(today.year, q * 3)[1]),
-                f"Quý {q}/{today.year}"),
+                f"Quý {q_roman}/{today.year}"),
         "6 tháng đầu năm": (datetime.date(today.year, 1, 1), datetime.date(today.year, 6, 30), f"6 tháng đầu năm {today.year}"),
         "9 tháng đầu năm": (datetime.date(today.year, 1, 1), datetime.date(today.year, 9, 30), f"9 tháng đầu năm {today.year}"),
         "Năm": (datetime.date(today.year, 1, 1), datetime.date(today.year, 12, 31), f"Năm {today.year}"),
@@ -561,6 +566,7 @@ def build_ky_report(ten, chuc_vu, tu, den, td, d, nhan_xet, phuong_huong):
 # ══════════════════════════════════════════════════════
 ten = cfg_get("ten", "Chưa đặt tên")
 chuc_vu = cfg_get("chuc_vu", "Chuyên viên")
+chuc_vu_day_du = cfg_get("chuc_vu_day_du", "") or chuc_vu
 
 with st.sidebar:
     st.markdown(f"### ⭐ TỈNH ỦY TUYÊN QUANG")
@@ -876,6 +882,40 @@ elif page == "📄 Báo cáo & Xuất file":
                 f"**{len(noi_bat)}** việc được nhận diện là sản phẩm/giải pháp nổi bật "
                 f"(loại = *Xây dựng ứng dụng chuyển đổi số* và đã hoàn thành).")
 
+        if tasks_ky:
+            st.markdown("**Chỉnh nhanh các cột riêng cho Biểu 01** (Thời hạn yêu cầu, Chủ trì, "
+                       "Phối hợp, Tự đánh giá chất lượng, Loại việc) — sửa xong bấm Lưu, "
+                       "không cần vào từng công việc ở trang Quản lý công việc.")
+            edit_df = pd.DataFrame([{
+                "id": t["id"],
+                "Nội dung": t["title"],
+                "Trạng thái": t["trang_thai"],
+                "Chủ trì": t.get("chu_tri", True) if t.get("chu_tri") is not None else True,
+                "Phối hợp": t.get("phoi_hop") or "",
+                "Thời hạn yêu cầu": datetime.date.fromisoformat(t["thoi_han_vb"]) if t.get("thoi_han_vb") else None,
+                "Tự đánh giá chất lượng": t.get("tu_danh_gia_cl") or "",
+                "Loại việc": t.get("loai_viec_bc") or "Kế hoạch/thường xuyên",
+            } for t in tasks_ky])
+            edited = st.data_editor(
+                edit_df, hide_index=True, use_container_width=True, key="bieu01_editor",
+                disabled=["id", "Nội dung", "Trạng thái"],
+                column_config={
+                    "id": None,  # ẩn cột id khỏi bảng hiển thị
+                    "Loại việc": st.column_config.SelectboxColumn(options=LOAI_VIEC_BC),
+                    "Thời hạn yêu cầu": st.column_config.DateColumn(format="DD/MM/YYYY"),
+                })
+            if st.button("💾 Lưu các chỉnh sửa vào công việc"):
+                for _, row in edited.iterrows():
+                    db_sua(int(row["id"]), {
+                        "chu_tri": bool(row["Chủ trì"]),
+                        "phoi_hop": row["Phối hợp"] or None,
+                        "thoi_han_vb": str(row["Thời hạn yêu cầu"]) if pd.notna(row["Thời hạn yêu cầu"]) else None,
+                        "tu_danh_gia_cl": row["Tự đánh giá chất lượng"] or None,
+                        "loai_viec_bc": row["Loại việc"],
+                    })
+                st.success("Đã lưu! Số liệu và bảng chi tiết bên dưới đã được cập nhật.")
+                st.rerun()
+
         st.markdown("**Sản phẩm, giải pháp nổi bật** (mục I)")
         san_pham_intro = st.text_area("Câu dẫn (không bắt buộc)",
             value=("Ngoài khối lượng công việc thường xuyên, trong kỳ đã chủ động nghiên cứu, "
@@ -906,7 +946,7 @@ elif page == "📄 Báo cáo & Xuất file":
             if not so_ngay_lam or not tu_danh_gia_pham_chat:
                 st.warning("Vui lòng điền ít nhất Số ngày làm việc và Tự đánh giá phẩm chất, đạo đức trước khi xuất.")
             else:
-                buf = build_bieu01_report(ten, chuc_vu, td, tasks_ky, san_pham_intro, san_pham_lines,
+                buf = build_bieu01_report(ten, chuc_vu_day_du, td, tasks_ky, san_pham_intro, san_pham_lines,
                                            so_ngay_lam, so_ngay_nghi or "Không", mo_ta_them_gio,
                                            tu_danh_gia_pham_chat, d2["xep_loai"], d2["can_cu"])
                 st.download_button("📥 Tải file .docx", data=buf,
@@ -950,12 +990,17 @@ elif page == "📄 Báo cáo & Xuất file":
 elif page == "⚙️ Cài đặt":
     st.title("⚙️ Cài đặt thông tin người dùng")
     new_ten = st.text_input("Họ và tên (*)", value=ten)
-    new_cv = st.text_input("Chức vụ", value=chuc_vu)
+    new_cv = st.text_input("Chức vụ (hiển thị ở thanh bên)", value=chuc_vu)
+    new_cv_dd = st.text_area(
+        "Chức vụ, đơn vị đầy đủ (dùng trong Biểu 01 — mục \"Chức vụ, đơn vị\")",
+        value=chuc_vu_day_du, height=70,
+        placeholder="VD: Chuyên viên Văn phòng Ban Tuyên giáo và Dân vận Tỉnh ủy Tuyên Quang.")
     if st.button("💾 Lưu thay đổi", type="primary"):
         if not new_ten.strip():
             st.warning("Họ tên không được trống!")
         else:
             cfg_set("ten", new_ten.strip())
             cfg_set("chuc_vu", new_cv.strip() or "Chuyên viên")
+            cfg_set("chuc_vu_day_du", new_cv_dd.strip())
             st.success("Đã cập nhật!")
             st.rerun()
