@@ -39,6 +39,7 @@ LOAI_CV = [
 TRANG_THAI = ["Chưa thực hiện", "Đang thực hiện", "Hoàn thành", "Trễ hạn"]
 UU_TIEN = ["Cao", "Bình thường", "Thấp"]
 VN_THU = ["Thứ Hai", "Thứ Ba", "Thứ Tư", "Thứ Năm", "Thứ Sáu", "Thứ Bảy", "Chủ Nhật"]
+LOAI_VIEC_BC = ["Kế hoạch/thường xuyên", "Phát sinh, đột xuất"]  # dùng cho Biểu 01 tự đánh giá
 
 st.markdown(f"""
 <style>
@@ -238,11 +239,182 @@ def build_cbcc_report(ten, tasks_ky, nwt_rows, tuan_so, nam):
     buf.seek(0)
     return buf
 
+def _danh_gia_tien_do(t):
+    """So sánh Thời gian thực hiện hoàn thành với Thời hạn yêu cầu (thoi_han_vb)."""
+    han = t.get("thoi_han_vb")
+    kt = t.get("ngay_kt") if t.get("trang_thai") == "Hoàn thành" else None
+    if not han or not kt:
+        return ""
+    try:
+        d_han = datetime.date.fromisoformat(str(han))
+        d_kt = datetime.date.fromisoformat(str(kt))
+    except Exception:
+        return ""
+    if d_kt < d_han:
+        return "Vượt thời gian yêu cầu"
+    if d_kt == d_han:
+        return "Đúng thời gian yêu cầu"
+    return "Chậm so với yêu cầu"
+
+def build_bieu01_report(ten, chuc_vu, ky_label, tasks, san_pham_intro, san_pham_list,
+                         so_ngay_lam, so_ngay_nghi, mo_ta_them_gio, tu_danh_gia_pham_chat,
+                         xep_loai, can_cu):
+    """Tạo file .docx đúng theo bố cục Biểu 01: Cá nhân tự đánh giá."""
+    doc = Document()
+    for sec in doc.sections:
+        sec.top_margin = Cm(2); sec.bottom_margin = Cm(2)
+        sec.left_margin = Cm(2.5); sec.right_margin = Cm(2)
+
+    p0 = doc.add_paragraph(); p0.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    r = p0.add_run("BIỂU 01: CÁ NHÂN TỰ ĐÁNH GIÁ\n")
+    r.bold = True; r.font.size = Pt(13); r.font.color.rgb = RGBColor(27, 58, 107)
+    r = p0.add_run(f"Kết quả thực hiện công tác {ky_label}")
+    r.bold = True; r.font.size = Pt(12)
+    doc.add_paragraph()
+
+    p1 = doc.add_paragraph()
+    r = p1.add_run("- Họ và tên: "); r.bold = True
+    p1.add_run(ten).bold = True
+    p2 = doc.add_paragraph()
+    p2.add_run("- Chức vụ, đơn vị: ").bold = True
+    p2.add_run(chuc_vu)
+    doc.add_paragraph()
+
+    tong = len(tasks)
+    ht = sum(1 for t in tasks if t["trang_thai"] == "Hoàn thành")
+    tx = sum(1 for t in tasks if (t.get("loai_viec_bc") or "Kế hoạch/thường xuyên") == "Kế hoạch/thường xuyên")
+    ps = tong - tx
+    danh_gia = [_danh_gia_tien_do(t) for t in tasks]
+    dung_vuot = sum(1 for d in danh_gia if d in ("Đúng thời gian yêu cầu", "Vượt thời gian yêu cầu"))
+    cham = sum(1 for d in danh_gia if d == "Chậm so với yêu cầu")
+    pt = round(ht / tong * 100) if tong else 0
+
+    h1 = doc.add_paragraph()
+    h1.add_run(f"I- Kết quả thực hiện nhiệm vụ được giao trong {ky_label}").bold = True
+    doc.add_paragraph(
+        f"Trong {ky_label}, tham mưu, thực hiện {tong} công việc; trong đó: {tx} việc theo "
+        f"chương trình, kế hoạch công tác và nhiệm vụ thường xuyên được giao; {ps} việc phát "
+        f"sinh, đột xuất.")
+    doc.add_paragraph(f"- Số việc hoàn thành: {ht}/{tong} việc, đạt tỷ lệ {pt}%.")
+    doc.add_paragraph(
+        f"- Tiến độ thực hiện: {dung_vuot} việc bảo đảm đúng thời gian yêu cầu; "
+        f"chậm tiến độ: {cham if cham else 'Không'}.")
+
+    if san_pham_list:
+        pnb = doc.add_paragraph()
+        pnb.add_run("Sản phẩm, giải pháp nổi bật, có tính đổi mới sáng tạo trong kỳ:").bold = True
+        pnb.runs[0].italic = True
+        if san_pham_intro:
+            doc.add_paragraph(san_pham_intro)
+        for i, sp in enumerate(san_pham_list, 1):
+            doc.add_paragraph(f"({i}) {sp}")
+    doc.add_paragraph()
+
+    # ── Bảng chi tiết (trang ngang) ──
+    sec_landscape = doc.add_section()
+    sec_landscape.orientation = 1  # WD_ORIENT.LANDSCAPE
+    sec_landscape.page_width, sec_landscape.page_height = sec_landscape.page_height, sec_landscape.page_width
+    sec_landscape.left_margin = Cm(1.5); sec_landscape.right_margin = Cm(1.5)
+    sec_landscape.top_margin = Cm(1.5); sec_landscape.bottom_margin = Cm(1.5)
+
+    tbl = doc.add_table(rows=1, cols=9)
+    tbl.style = "Table Grid"
+    heads = ["STT", "Nội dung công việc được giao/ thực hiện", "Chủ trì", "Phối hợp",
+              "Thời hạn yêu cầu hoàn thành", "Thời gian thực hiện hoàn thành",
+              "Đánh giá tiến độ thực hiện", "Tự đánh giá chất lượng công tác tham mưu",
+              "Loại việc"]
+    _fill_row(tbl.rows[0].cells, heads, size=9.5)
+    _style_header_row(tbl.rows[0])
+    for i, t in enumerate(tasks, 1):
+        cells = tbl.add_row().cells
+        kt = _fmt_d(t.get("ngay_kt")) if t.get("trang_thai") == "Hoàn thành" else ""
+        _fill_row(cells, [
+            str(i), t["title"],
+            "X" if t.get("chu_tri", True) else "",
+            t.get("phoi_hop") or "",
+            _fmt_d(t.get("thoi_han_vb")),
+            kt,
+            _danh_gia_tien_do(t),
+            t.get("tu_danh_gia_cl") or ("Hoàn thành tốt nhiệm vụ" if t["trang_thai"] == "Hoàn thành" else ""),
+            t.get("loai_viec_bc") or "Kế hoạch/thường xuyên",
+        ], size=9, center_cols=(0, 2, 4, 5, 6, 8))
+    if not tasks:
+        tbl.add_row()
+    _set_col_widths(tbl, [1, 6, 1.5, 2.5, 2.3, 2.3, 2.5, 4, 2.5])
+
+    # ── Quay lại trang dọc cho mục II, III ──
+    sec_portrait = doc.add_section()
+    sec_portrait.orientation = 0  # WD_ORIENT.PORTRAIT
+    sec_portrait.page_width, sec_portrait.page_height = sec_portrait.page_height, sec_portrait.page_width
+    sec_portrait.left_margin = Cm(2.5); sec_portrait.right_margin = Cm(2)
+    sec_portrait.top_margin = Cm(2); sec_portrait.bottom_margin = Cm(2)
+
+    h2 = doc.add_paragraph()
+    h2.add_run("II- Đánh giá về đạo đức, lối sống; việc chấp hành nội quy, quy chế làm việc").bold = True
+    doc.add_paragraph(f"- Số ngày làm việc: {so_ngay_lam}; số ngày nghỉ: {so_ngay_nghi}. {mo_ta_them_gio}")
+    doc.add_paragraph(f"- Tự đánh giá ngắn gọn về phẩm chất, đạo đức, lối sống: {tu_danh_gia_pham_chat}")
+    doc.add_paragraph()
+
+    h3 = doc.add_paragraph()
+    h3.add_run(f"III. Đề xuất mức xếp loại (theo 4 mức): {xep_loai}.").bold = True
+    p_cc = doc.add_paragraph()
+    r = p_cc.add_run(f"Căn cứ đề xuất: {can_cu}")
+    r.italic = True
+    doc.add_paragraph()
+
+    kytbl = doc.add_table(rows=1, cols=2)
+    kytbl.autofit = True
+    kytbl.rows[0].cells[0].text = ""
+    c2 = kytbl.rows[0].cells[1]
+    c2.text = ""
+    pk = c2.paragraphs[0]
+    pk.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    r = pk.add_run("NGƯỜI TỰ ĐÁNH GIÁ\n"); r.bold = True
+    pk.add_run("\n\n\n")
+    r2 = pk.add_run(ten); r2.bold = True
+
+    buf = io.BytesIO()
+    doc.save(buf)
+    buf.seek(0)
+    return buf
+
 # ══════════════════════════════════════════════════════
 #  BÁO CÁO TỔNG HỢP THEO KỲ (kế thừa bản desktop)
 # ══════════════════════════════════════════════════════
 XL_MUC = ["Tự động (theo kết quả)", "Hoàn thành xuất sắc nhiệm vụ",
           "Hoàn thành tốt nhiệm vụ", "Hoàn thành nhiệm vụ", "Không hoàn thành nhiệm vụ"]
+
+def ky_options():
+    today = datetime.date.today()
+    q = (today.month - 1) // 3 + 1
+    return {
+        "Tuần": (today - datetime.timedelta(days=today.weekday()),
+                 today - datetime.timedelta(days=today.weekday()) + datetime.timedelta(days=6),
+                 f"Tuần {today.isocalendar()[1]}/{today.year}"),
+        "Tháng": (today.replace(day=1),
+                  today.replace(day=calendar.monthrange(today.year, today.month)[1]),
+                  f"Tháng {today.month:02d}/{today.year}"),
+        "Quý": (datetime.date(today.year, (q - 1) * 3 + 1, 1),
+                datetime.date(today.year, q * 3, calendar.monthrange(today.year, q * 3)[1]),
+                f"Quý {q}/{today.year}"),
+        "6 tháng đầu năm": (datetime.date(today.year, 1, 1), datetime.date(today.year, 6, 30), f"6 tháng đầu năm {today.year}"),
+        "9 tháng đầu năm": (datetime.date(today.year, 1, 1), datetime.date(today.year, 9, 30), f"9 tháng đầu năm {today.year}"),
+        "Năm": (datetime.date(today.year, 1, 1), datetime.date(today.year, 12, 31), f"Năm {today.year}"),
+        "Tùy chọn": None,
+    }
+
+def chon_ky(prefix, today):
+    """Hiển thị bộ chọn kỳ báo cáo dùng chung; trả về (tu, den, nhãn kỳ)."""
+    options = ky_options()
+    ky_chon = st.selectbox("Chọn kỳ báo cáo", list(options.keys()), key=f"{prefix}_ky")
+    if ky_chon == "Tùy chọn":
+        c1, c2, c3 = st.columns(3)
+        tu = c1.date_input("Từ ngày", value=today.replace(day=1), key=f"{prefix}_tu")
+        den = c2.date_input("Đến ngày", value=today, key=f"{prefix}_den")
+        td = c3.text_input("Tiêu đề / nhãn kỳ", value="kỳ báo cáo", key=f"{prefix}_td")
+    else:
+        tu, den, td = options[ky_chon]
+    return tu, den, td
 
 def tinh_toan_ky(tu, den, xl_chon):
     tasks = db_query(tu, den)
@@ -524,8 +696,19 @@ elif page == "📅 Lịch & Quản lý công việc":
         c11, c12, c13 = st.columns(3)
         lanh_dao_giao = c11.text_input("Lãnh đạo giao", value=edit_data.get("lanh_dao_giao") or "")
         thoi_han_vb_raw = edit_data.get("thoi_han_vb")
-        thoi_han_vb = c12.date_input("Thời hạn của VB", value=datetime.date.fromisoformat(thoi_han_vb_raw) if thoi_han_vb_raw else None)
+        thoi_han_vb = c12.date_input("Thời hạn yêu cầu hoàn thành / Thời hạn của VB",
+                                      value=datetime.date.fromisoformat(thoi_han_vb_raw) if thoi_han_vb_raw else None)
         lanh_dao_tham_dinh = c13.text_input("Lãnh đạo thẩm định, duyệt", value=edit_data.get("lanh_dao_tham_dinh") or "")
+
+        st.markdown("**Thông tin cho Biểu 01 — Phiếu tự đánh giá** (không bắt buộc)")
+        c14, c15, c16 = st.columns(3)
+        chu_tri = c14.checkbox("Chủ trì thực hiện", value=edit_data.get("chu_tri", True) if edit_data else True)
+        phoi_hop = c15.text_input("Phối hợp (đơn vị/người, nếu có)", value=edit_data.get("phoi_hop") or "")
+        loai_viec_bc = c16.selectbox("Loại việc (cho Biểu 01)", LOAI_VIEC_BC,
+                                      index=LOAI_VIEC_BC.index(edit_data["loai_viec_bc"]) if edit_data.get("loai_viec_bc") in LOAI_VIEC_BC else 0)
+        tu_danh_gia_cl = st.text_input("Tự đánh giá chất lượng công tác tham mưu",
+                                        value=edit_data.get("tu_danh_gia_cl") or "",
+                                        placeholder="VD: Hoàn thành tốt nhiệm vụ")
 
         ket_qua = st.text_input("Kết quả thực hiện", value=edit_data.get("ket_qua") or "")
         ghi_chu = st.text_area("Ghi chú", value=edit_data.get("ghi_chu") or "", height=70)
@@ -543,7 +726,10 @@ elif page == "📅 Lịch & Quản lý công việc":
                             ghi_chu=ghi_chu or None,
                             lanh_dao_giao=lanh_dao_giao or None,
                             thoi_han_vb=str(thoi_han_vb) if thoi_han_vb else None,
-                            lanh_dao_tham_dinh=lanh_dao_tham_dinh or None)
+                            lanh_dao_tham_dinh=lanh_dao_tham_dinh or None,
+                            chu_tri=chu_tri, phoi_hop=phoi_hop or None,
+                            loai_viec_bc=loai_viec_bc,
+                            tu_danh_gia_cl=tu_danh_gia_cl or None)
                 if edit_id:
                     db_sua(edit_id, data)
                     st.session_state["edit_task_id"] = None
@@ -642,7 +828,11 @@ elif page == "🗓️ Nhiệm vụ tuần tới":
 elif page == "📄 Báo cáo & Xuất file":
     st.title("📄 Báo cáo & Xuất file")
 
-    tab1, tab2 = st.tabs(["📝 Mẫu Tổng hợp BC của CBCC VP (theo tuần)", "📊 Báo cáo tổng hợp theo kỳ"])
+    tab1, tab2, tab3 = st.tabs([
+        "📝 Mẫu Tổng hợp BC của CBCC VP (theo tuần)",
+        "🗂️ Biểu 01: Phiếu tự đánh giá",
+        "📊 Báo cáo tổng hợp theo kỳ",
+    ])
 
     # ── TAB 1: Mẫu CBCC VP ──
     with tab1:
@@ -668,35 +858,67 @@ elif page == "📄 Báo cáo & Xuất file":
                                 file_name=f"BC_CBCC_Tuan{mon_start.isocalendar()[1]}_{mon_start.isocalendar()[0]}.docx",
                                 mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document")
 
-    # ── TAB 2: Báo cáo tổng hợp theo kỳ ──
+    # ── TAB 2: Biểu 01 — Phiếu tự đánh giá ──
     with tab2:
+        st.caption("Xuất đúng bố cục **Biểu 01: Cá nhân tự đánh giá** — dùng được cho báo cáo "
+                   "tuần, tháng, quý, 6 tháng, 9 tháng hoặc năm. Mục I và bảng chi tiết được "
+                   "tổng hợp tự động từ công việc trong kỳ; mục II (đạo đức, lối sống) bạn tự "
+                   "viết vì đây là nội dung mang tính tường thuật cá nhân.")
         today = datetime.date.today()
-        q = (today.month - 1) // 3 + 1
-        options = {
-            "Tuần": (today - datetime.timedelta(days=today.weekday()),
-                     today - datetime.timedelta(days=today.weekday()) + datetime.timedelta(days=6),
-                     f"Tuần {today.isocalendar()[1]}/{today.year}"),
-            "Tháng": (today.replace(day=1),
-                      today.replace(day=calendar.monthrange(today.year, today.month)[1]),
-                      f"Tháng {today.month:02d}/{today.year}"),
-            "Quý": (datetime.date(today.year, (q - 1) * 3 + 1, 1),
-                    datetime.date(today.year, q * 3, calendar.monthrange(today.year, q * 3)[1]),
-                    f"Quý {q}/{today.year}"),
-            "6 tháng đầu năm": (datetime.date(today.year, 1, 1), datetime.date(today.year, 6, 30), f"6 tháng đầu năm {today.year}"),
-            "9 tháng đầu năm": (datetime.date(today.year, 1, 1), datetime.date(today.year, 9, 30), f"9 tháng đầu năm {today.year}"),
-            "Năm": (datetime.date(today.year, 1, 1), datetime.date(today.year, 12, 31), f"Năm {today.year}"),
-            "Tùy chọn": None,
-        }
-        ky_chon = st.selectbox("Chọn kỳ báo cáo", list(options.keys()))
-        if ky_chon == "Tùy chọn":
-            c1, c2, c3 = st.columns(3)
-            tu = c1.date_input("Từ ngày", value=today.replace(day=1))
-            den = c2.date_input("Đến ngày", value=today)
-            td = c3.text_input("Tiêu đề báo cáo", value="Báo cáo công tác")
-        else:
-            tu, den, td = options[ky_chon]
+        tu, den, td = chon_ky("bieu01", today)
+        st.markdown(f"**Khoảng ngày:** {_fmt_d(tu)} – {_fmt_d(den)}")
 
-        xl_chon = st.selectbox("Đề xuất mức xếp loại", XL_MUC)
+        tasks_ky = db_query(tu, den)
+        ht_ky = [t for t in tasks_ky if t["trang_thai"] == "Hoàn thành"]
+        noi_bat = [t for t in tasks_ky if t.get("loai") == "Xây dựng ứng dụng chuyển đổi số"
+                   and t["trang_thai"] == "Hoàn thành"]
+        st.info(f"Mục I / bảng chi tiết sẽ có **{len(tasks_ky)}** công việc, trong đó "
+                f"**{len(noi_bat)}** việc được nhận diện là sản phẩm/giải pháp nổi bật "
+                f"(loại = *Xây dựng ứng dụng chuyển đổi số* và đã hoàn thành).")
+
+        st.markdown("**Sản phẩm, giải pháp nổi bật** (mục I)")
+        san_pham_intro = st.text_area("Câu dẫn (không bắt buộc)",
+            value=("Ngoài khối lượng công việc thường xuyên, trong kỳ đã chủ động nghiên cứu, "
+                   "tự xây dựng và đưa vào sử dụng thực tế các sản phẩm, phần mềm phục vụ trực "
+                   "tiếp công tác chuyên môn và chuyển đổi số của Ban:") if noi_bat else "",
+            height=70)
+        san_pham_list = st.text_area(
+            "Danh sách sản phẩm — mỗi dòng 1 sản phẩm (có thể sửa/thêm)",
+            value="\n".join(t["title"] + (f" — {t['ket_qua']}" if t.get("ket_qua") else "") for t in noi_bat),
+            height=100)
+        san_pham_lines = [l.strip() for l in san_pham_list.split("\n") if l.strip()]
+
+        st.markdown("**II- Đánh giá về đạo đức, lối sống; chấp hành nội quy, quy chế làm việc**")
+        c1, c2 = st.columns(2)
+        so_ngay_lam = c1.text_input("Số ngày làm việc", placeholder="VD: khoảng 63 ngày công")
+        so_ngay_nghi = c2.text_input("Số ngày nghỉ", placeholder="VD: Không")
+        mo_ta_them_gio = st.text_area("Mô tả thêm về thời gian làm việc (làm ngoài giờ, cuối tuần...)", height=70)
+        tu_danh_gia_pham_chat = st.text_area("Tự đánh giá phẩm chất, đạo đức, lối sống", height=90)
+
+        xl_chon2 = st.selectbox("Đề xuất mức xếp loại", XL_MUC, key="bieu01_xl")
+        d2 = tinh_toan_ky(tu, den, xl_chon2)
+        c3, c4, c5 = st.columns(3)
+        c3.metric("Tổng công việc", d2["tong"])
+        c4.metric("Hoàn thành", f"{d2['ht']} ({d2['pt']}%)")
+        c5.metric("Đề xuất xếp loại", d2["xep_loai"])
+
+        if st.button("⬇ Xuất file Word theo Biểu 01", type="primary"):
+            if not so_ngay_lam or not tu_danh_gia_pham_chat:
+                st.warning("Vui lòng điền ít nhất Số ngày làm việc và Tự đánh giá phẩm chất, đạo đức trước khi xuất.")
+            else:
+                buf = build_bieu01_report(ten, chuc_vu, td, tasks_ky, san_pham_intro, san_pham_lines,
+                                           so_ngay_lam, so_ngay_nghi or "Không", mo_ta_them_gio,
+                                           tu_danh_gia_pham_chat, d2["xep_loai"], d2["can_cu"])
+                st.download_button("📥 Tải file .docx", data=buf,
+                                    file_name=f"Bieu01_TuDanhGia_{td.replace(' ', '_').replace('/', '_')}.docx",
+                                    mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document")
+
+    # ── TAB 3: Báo cáo tổng hợp theo kỳ ──
+    with tab3:
+        today = datetime.date.today()
+        tu, den, td = chon_ky("ky", today)
+
+        xl_chon = st.selectbox("Đề xuất mức xếp loại", XL_MUC, key="ky_xl")
         nhan_xet = st.text_area("Nhận xét, đánh giá bổ sung (không bắt buộc)", height=70)
         phuong_huong = st.text_area("Phương hướng nhiệm vụ tiếp theo (không bắt buộc)", height=70)
 
