@@ -23,8 +23,13 @@ create table if not exists tasks (
     ghi_chu       text,
     -- Cột mới cho Mẫu Tổng hợp BC của CBCC VP:
     lanh_dao_giao       text,   -- Lãnh đạo giao nhiệm vụ
-    thoi_han_vb         date,   -- Thời hạn của văn bản
+    thoi_han_vb         date,   -- Thời hạn của văn bản / Thời hạn yêu cầu hoàn thành
     lanh_dao_tham_dinh  text,   -- Lãnh đạo thẩm định, duyệt
+    -- Cột mới cho Biểu 01: Cá nhân tự đánh giá:
+    chu_tri             boolean default true,               -- Chủ trì thực hiện (X)
+    phoi_hop            text,                                -- Đơn vị/người phối hợp
+    loai_viec_bc        text default 'Kế hoạch/thường xuyên', -- Kế hoạch/thường xuyên | Phát sinh, đột xuất
+    tu_danh_gia_cl      text,                                -- Tự đánh giá chất lượng công tác tham mưu
     created_at    timestamptz default now()
 );
 
@@ -49,6 +54,17 @@ insert into config (key, value) values
     ('ten', 'Nguyễn Văn A'),
     ('chuc_vu', 'Chuyên viên')
 on conflict (key) do nothing;
+
+-- ─────────────────────────────────────────────────────────────
+-- Nếu bạn ĐÃ chạy schema này trước đó (bảng tasks đã tồn tại),
+-- chạy riêng khối ALTER TABLE dưới đây để bổ sung 4 cột mới phục
+-- vụ Biểu 01 mà không mất dữ liệu đang có. An toàn khi chạy lại
+-- nhiều lần (IF NOT EXISTS).
+-- ─────────────────────────────────────────────────────────────
+alter table tasks add column if not exists chu_tri boolean default true;
+alter table tasks add column if not exists phoi_hop text;
+alter table tasks add column if not exists loai_viec_bc text default 'Kế hoạch/thường xuyên';
+alter table tasks add column if not exists tu_danh_gia_cl text;
 
 -- Index phục vụ lọc theo khoảng ngày (dùng nhiều trong báo cáo/lịch)
 create index if not exists idx_tasks_ngay on tasks (ngay_bd, ngay_kt);
