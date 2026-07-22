@@ -68,8 +68,10 @@ sb = get_client()
 if "app_password" in st.secrets.get("auth", {}):
     if not st.session_state.get("authed"):
         st.title("🔒 Đăng nhập")
-        pw = st.text_input("Mật khẩu", type="password")
-        if st.button("Đăng nhập"):
+        with st.form("login_form"):
+            pw = st.text_input("Mật khẩu", type="password")
+            submitted = st.form_submit_button("Đăng nhập")
+        if submitted:
             if pw == st.secrets["auth"]["app_password"]:
                 st.session_state["authed"] = True
                 st.rerun()
