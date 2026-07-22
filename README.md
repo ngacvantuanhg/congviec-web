@@ -70,22 +70,51 @@ app_password = "mat-khau-cua-ban"
 - **Lịch & Quản lý công việc**: thêm/sửa/xóa công việc, lọc theo trạng thái, loại, khoảng ngày.
 - **Nhiệm vụ tuần tới**: khai báo trước các việc dự kiến tuần sau — đây chính
   là nguồn dữ liệu cho mục 2 của Mẫu CBCC VP.
-- **Báo cáo & Xuất file**:
-  - Tab **Mẫu Tổng hợp BC của CBCC VP**: chọn tuần → xuất đúng bố cục file
+- **Báo cáo & Xuất file** — 3 tab:
+  - **Mẫu Tổng hợp BC của CBCC VP**: chọn tuần → xuất đúng bố cục file
     mẫu gốc (mục 1 lấy công việc trong tuần, mục 2 lấy nhiệm vụ đã khai ở
     trang Nhiệm vụ tuần tới của **tuần kế tiếp**).
-  - Tab **Báo cáo tổng hợp theo kỳ**: giữ nguyên logic báo cáo tuần/tháng/quý/
+  - **Biểu 01: Phiếu tự đánh giá**: chọn kỳ (tuần/tháng/quý/6 tháng/9 tháng/
+    năm/tùy chọn) → xuất đúng bố cục "Biểu 01: Cá nhân tự đánh giá" —
+    mục I và bảng chi tiết 9 cột (Chủ trì, Phối hợp, Thời hạn yêu cầu,
+    Thời gian hoàn thành, Đánh giá tiến độ tự động so sánh 2 mốc thời
+    gian, Tự đánh giá chất lượng, Loại việc) được tổng hợp tự động từ
+    dữ liệu công việc; mục II (đạo đức, lối sống) bạn tự viết trực tiếp
+    trên form vì đây là nội dung tường thuật cá nhân, phần mềm không tự
+    suy diễn thay bạn.
+  - **Báo cáo tổng hợp theo kỳ**: giữ nguyên logic báo cáo tuần/tháng/quý/
     6 tháng/9 tháng/năm như bản desktop, kèm đề xuất xếp loại tự động.
 
-## Ghi chú về 3 trường mới trong bảng `tasks`
+## Ghi chú về các trường mới trong bảng `tasks`
 
-Để khớp đúng các cột trong Mẫu CBCC VP, bảng `tasks` có thêm:
+Để khớp đúng các cột trong 2 mẫu báo cáo, bảng `tasks` có thêm:
+
+**Cho Mẫu CBCC VP:**
 - `lanh_dao_giao` — tên lãnh đạo giao việc
-- `thoi_han_vb` — thời hạn của văn bản (nếu việc gắn với 1 văn bản có hạn)
+- `thoi_han_vb` — thời hạn của văn bản / thời hạn yêu cầu hoàn thành (dùng
+  chung cho cả 2 mẫu)
 - `lanh_dao_tham_dinh` — người thẩm định/duyệt kết quả
 
-Các trường này không bắt buộc khi nhập việc — để trống vẫn xuất báo cáo
-bình thường, chỉ là ô tương ứng sẽ để trống trong file Word.
+**Cho Biểu 01:**
+- `chu_tri` — có phải người chủ trì thực hiện việc này không (mặc định: có)
+- `phoi_hop` — đơn vị/người phối hợp thực hiện (nếu có)
+- `loai_viec_bc` — "Kế hoạch/thường xuyên" hoặc "Phát sinh, đột xuất", dùng
+  để tính số liệu tổng hợp ở mục I
+- `tu_danh_gia_cl` — tự đánh giá chất lượng công tác tham mưu cho từng việc
+  (để trống, phần mềm tự điền "Hoàn thành tốt nhiệm vụ" nếu việc đã hoàn thành)
+
+Cột "Đánh giá tiến độ thực hiện" trong Biểu 01 được **tính tự động**: so
+sánh `thoi_han_vb` (hạn yêu cầu) với ngày hoàn thành thực tế — sớm hơn ghi
+"Vượt thời gian yêu cầu", đúng ngày ghi "Đúng thời gian yêu cầu", trễ hơn
+ghi "Chậm so với yêu cầu".
+
+Tất cả các trường trên không bắt buộc khi nhập việc — để trống vẫn xuất
+báo cáo bình thường, chỉ là ô tương ứng sẽ để trống trong file Word.
+
+**Nếu bạn đã tạo Supabase project trước khi có bản cập nhật này**, mở lại
+SQL Editor và chạy riêng khối `ALTER TABLE ... ADD COLUMN IF NOT EXISTS`
+ở cuối phần đầu file `supabase_schema.sql` để bổ sung 4 cột mới — không
+ảnh hưởng dữ liệu đang có.
 
 ## Bảo trì
 
