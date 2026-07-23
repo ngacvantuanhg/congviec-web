@@ -672,7 +672,7 @@ if page == "📊 Dashboard":
 elif page == "📅 Lịch & Quản lý công việc":
     st.title("📅 Lịch & Quản lý công việc")
 
-    with st.expander("➕ Thêm / ✏️ Sửa công việc", expanded=False):
+    with st.expander("➕ Thêm / ✏️ Sửa công việc", expanded=bool(st.session_state.get("edit_task_id"))):
         edit_id = st.session_state.get("edit_task_id")
         edit_data = {}
         if edit_id:
