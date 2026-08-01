@@ -390,37 +390,55 @@ def build_bieu01_report(ten, chuc_vu, ky_label, tasks, san_pham_intro, san_pham_
 XL_MUC = ["Tự động (theo kết quả)", "Hoàn thành xuất sắc nhiệm vụ",
           "Hoàn thành tốt nhiệm vụ", "Hoàn thành nhiệm vụ", "Không hoàn thành nhiệm vụ"]
 
-def ky_options():
-    today = datetime.date.today()
-    q = (today.month - 1) // 3 + 1
-    q_roman = {1: "I", 2: "II", 3: "III", 4: "IV"}[q]
-    return {
-        "Tuần": (today - datetime.timedelta(days=today.weekday()),
-                 today - datetime.timedelta(days=today.weekday()) + datetime.timedelta(days=6),
-                 f"Tuần {today.isocalendar()[1]}/{today.year}"),
-        "Tháng": (today.replace(day=1),
-                  today.replace(day=calendar.monthrange(today.year, today.month)[1]),
-                  f"Tháng {today.month:02d}/{today.year}"),
-        "Quý": (datetime.date(today.year, (q - 1) * 3 + 1, 1),
-                datetime.date(today.year, q * 3, calendar.monthrange(today.year, q * 3)[1]),
-                f"Quý {q_roman}/{today.year}"),
-        "6 tháng đầu năm": (datetime.date(today.year, 1, 1), datetime.date(today.year, 6, 30), f"6 tháng đầu năm {today.year}"),
-        "9 tháng đầu năm": (datetime.date(today.year, 1, 1), datetime.date(today.year, 9, 30), f"9 tháng đầu năm {today.year}"),
-        "Năm": (datetime.date(today.year, 1, 1), datetime.date(today.year, 12, 31), f"Năm {today.year}"),
-        "Tùy chọn": None,
-    }
-
 def chon_ky(prefix, today):
-    """Hiển thị bộ chọn kỳ báo cáo dùng chung; trả về (tu, den, nhãn kỳ)."""
-    options = ky_options()
-    ky_chon = st.selectbox("Chọn kỳ báo cáo", list(options.keys()), key=f"{prefix}_ky")
-    if ky_chon == "Tùy chọn":
+    """Hiển thị bộ chọn kỳ báo cáo dùng chung — cho chọn đúng tuần/tháng/quý/năm
+    mong muốn (kể cả kỳ đã qua), không chỉ mặc định theo ngày hôm nay.
+    Trả về (tu, den, nhãn kỳ)."""
+    loai_ky = st.selectbox("Loại kỳ báo cáo",
+        ["Tuần", "Tháng", "Quý", "6 tháng đầu năm", "9 tháng đầu năm", "Năm", "Tùy chọn"],
+        key=f"{prefix}_loai_ky")
+    nam_list = list(range(today.year - 5, today.year + 2))
+    nam_idx = nam_list.index(today.year)
+
+    if loai_ky == "Tuần":
+        ngay_moc = st.date_input("Chọn 1 ngày bất kỳ trong tuần cần báo cáo",
+                                  value=today, key=f"{prefix}_ngay_moc")
+        tu = ngay_moc - datetime.timedelta(days=ngay_moc.weekday())
+        den = tu + datetime.timedelta(days=6)
+        td = f"Tuần {tu.isocalendar()[1]}/{tu.isocalendar()[0]}"
+    elif loai_ky == "Tháng":
+        c1, c2 = st.columns(2)
+        thang_chon = c1.selectbox("Tháng", list(range(1, 13)), index=today.month - 1, key=f"{prefix}_thang")
+        nam_chon = c2.selectbox("Năm", nam_list, index=nam_idx, key=f"{prefix}_nam_thang")
+        tu = datetime.date(nam_chon, thang_chon, 1)
+        den = datetime.date(nam_chon, thang_chon, calendar.monthrange(nam_chon, thang_chon)[1])
+        td = f"Tháng {thang_chon:02d}/{nam_chon}"
+    elif loai_ky == "Quý":
+        c1, c2 = st.columns(2)
+        q_map = {"I": 1, "II": 2, "III": 3, "IV": 4}
+        q_label = c1.selectbox("Quý", list(q_map.keys()), index=(today.month - 1) // 3, key=f"{prefix}_quy")
+        nam_chon = c2.selectbox("Năm", nam_list, index=nam_idx, key=f"{prefix}_nam_quy")
+        q = q_map[q_label]
+        tu = datetime.date(nam_chon, (q - 1) * 3 + 1, 1)
+        den = datetime.date(nam_chon, q * 3, calendar.monthrange(nam_chon, q * 3)[1])
+        td = f"Quý {q_label}/{nam_chon}"
+    elif loai_ky == "6 tháng đầu năm":
+        nam_chon = st.selectbox("Năm", nam_list, index=nam_idx, key=f"{prefix}_nam_6t")
+        tu, den = datetime.date(nam_chon, 1, 1), datetime.date(nam_chon, 6, 30)
+        td = f"6 tháng đầu năm {nam_chon}"
+    elif loai_ky == "9 tháng đầu năm":
+        nam_chon = st.selectbox("Năm", nam_list, index=nam_idx, key=f"{prefix}_nam_9t")
+        tu, den = datetime.date(nam_chon, 1, 1), datetime.date(nam_chon, 9, 30)
+        td = f"9 tháng đầu năm {nam_chon}"
+    elif loai_ky == "Năm":
+        nam_chon = st.selectbox("Năm", nam_list, index=nam_idx, key=f"{prefix}_nam_nam")
+        tu, den = datetime.date(nam_chon, 1, 1), datetime.date(nam_chon, 12, 31)
+        td = f"Năm {nam_chon}"
+    else:  # Tùy chọn
         c1, c2, c3 = st.columns(3)
         tu = c1.date_input("Từ ngày", value=today.replace(day=1), key=f"{prefix}_tu")
         den = c2.date_input("Đến ngày", value=today, key=f"{prefix}_den")
         td = c3.text_input("Tiêu đề / nhãn kỳ", value="kỳ báo cáo", key=f"{prefix}_td")
-    else:
-        tu, den, td = options[ky_chon]
     return tu, den, td
 
 def tinh_toan_ky(tu, den, xl_chon):
