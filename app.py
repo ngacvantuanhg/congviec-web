@@ -784,6 +784,7 @@ elif page == "📅 Lịch & Quản lý công việc":
         tasks = [t for t in tasks if t["trang_thai"] == f_ts]
     if f_loai != "Tất cả":
         tasks = [t for t in tasks if t.get("loai") == f_loai]
+    tasks = sorted(tasks, key=lambda t: (t["ngay_bd"], t.get("gio_bd") or ""), reverse=True)
 
     st.caption(f"📋 Tổng: {len(tasks)} công việc")
     for t in tasks:
