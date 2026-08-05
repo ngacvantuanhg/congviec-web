@@ -171,6 +171,7 @@ def _fmt_d(s):
     except Exception:
         return str(s)
 
+
 # ══════════════════════════════════════════════════════
 #  BÁO CÁO THEO MẪU "TỔNG HỢP BC CỦA CBCC VP" (mới)
 # ══════════════════════════════════════════════════════
@@ -180,18 +181,18 @@ def build_cbcc_report(ten, tasks_ky, nwt_rows, tuan_so, nam):
     for sec in doc.sections:
         sec.top_margin = Cm(2); sec.bottom_margin = Cm(2)
         sec.left_margin = Cm(2); sec.right_margin = Cm(2)
-
+ 
     p = doc.add_paragraph()
     r = p.add_run("Họ và tên: ")
     r.bold = True; r.font.size = Pt(12)
     r2 = p.add_run(ten)
     r2.font.size = Pt(12)
-
+ 
     # ── 1. Kết quả thực hiện nhiệm vụ ──
     h1 = doc.add_paragraph()
     r = h1.add_run("1. Kết quả thực hiện nhiệm vụ")
     r.bold = True; r.font.size = Pt(12)
-
+ 
     tbl = doc.add_table(rows=1, cols=7)
     tbl.style = "Table Grid"
     heads = ["STT", "Nội dung", "Lãnh đạo giao", "Thời gian được giao",
