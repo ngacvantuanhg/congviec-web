@@ -171,7 +171,6 @@ def _fmt_d(s):
     except Exception:
         return str(s)
 
-
 # ══════════════════════════════════════════════════════
 #  BÁO CÁO THEO MẪU "TỔNG HỢP BC CỦA CBCC VP" (mới)
 # ══════════════════════════════════════════════════════
@@ -181,18 +180,18 @@ def build_cbcc_report(ten, tasks_ky, nwt_rows, tuan_so, nam):
     for sec in doc.sections:
         sec.top_margin = Cm(2); sec.bottom_margin = Cm(2)
         sec.left_margin = Cm(2); sec.right_margin = Cm(2)
- 
+
     p = doc.add_paragraph()
     r = p.add_run("Họ và tên: ")
     r.bold = True; r.font.size = Pt(12)
     r2 = p.add_run(ten)
     r2.font.size = Pt(12)
- 
+
     # ── 1. Kết quả thực hiện nhiệm vụ ──
     h1 = doc.add_paragraph()
     r = h1.add_run("1. Kết quả thực hiện nhiệm vụ")
     r.bold = True; r.font.size = Pt(12)
- 
+
     tbl = doc.add_table(rows=1, cols=7)
     tbl.style = "Table Grid"
     heads = ["STT", "Nội dung", "Lãnh đạo giao", "Thời gian được giao",
@@ -217,12 +216,8 @@ def build_cbcc_report(ten, tasks_ky, nwt_rows, tuan_so, nam):
 
     # ── 2. Nhiệm vụ tuần tới ──
     h2 = doc.add_paragraph()
-    r = h2.add_run("2. Nhiệm vụ tuần tới ")
+    r = h2.add_run("2. Nhiệm vụ tuần tới")
     r.bold = True; r.font.size = Pt(12)
-    r2 = h2.add_run("(A/c lên dự kiến trước, có thể bổ sung thêm nhiệm vụ gửi e "
-                     "trước 10h ngày thứ 2 tuần tới để e kịp tổng hợp, trình lãnh đạo "
-                     "phòng đúng thời gian ạ)")
-    r2.italic = True; r2.font.size = Pt(10.5)
 
     tbl2 = doc.add_table(rows=1, cols=4)
     tbl2.style = "Table Grid"
