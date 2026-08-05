@@ -181,6 +181,13 @@ def build_cbcc_report(ten, tasks_ky, nwt_rows, tuan_so, nam):
         sec.top_margin = Cm(2); sec.bottom_margin = Cm(2)
         sec.left_margin = Cm(2); sec.right_margin = Cm(2)
 
+    p_title = doc.add_paragraph(); p_title.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    r = p_title.add_run("TỔNG HỢP BÁO CÁO CÔNG TÁC TUẦN\n")
+    r.bold = True; r.font.size = Pt(13); r.font.color.rgb = RGBColor(27, 58, 107)
+    r = p_title.add_run(f"Tuần {tuan_so}/{nam}")
+    r.bold = True; r.font.size = Pt(12)
+    doc.add_paragraph()
+
     p = doc.add_paragraph()
     r = p.add_run("Họ và tên: ")
     r.bold = True; r.font.size = Pt(12)
