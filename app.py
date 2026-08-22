@@ -246,6 +246,14 @@ def _fill_row(cells, values, size=10, center_cols=()):
 
 def _set_col_widths(table, widths_cm):
     table.autofit = False
+    table.allow_autofit = False
+    tblPr = table._tbl.tblPr
+    tblLayout = OxmlElement('w:tblLayout')
+    tblLayout.set(qn('w:type'), 'fixed')
+    tblPr.append(tblLayout)
+    for i, w in enumerate(widths_cm):
+        if i < len(table.columns):
+            table.columns[i].width = Cm(w)
     for row in table.rows:
         for cell, w in zip(row.cells, widths_cm):
             cell.width = Cm(w)
@@ -715,7 +723,7 @@ def build_phieu_danhgia_report(ten, chuc_vu_day_du, co_quan,
     _pdg_options_row(tbl, "-", "Về đơn, thư phản ánh khiếu nại, tố cáo, chịu trách nhiệm của "
                               "người đứng đầu, người trực tiếp phụ trách lĩnh vực", PDG_V3_OPTS, v3)
 
-    _set_col_widths(tbl, [1, 6, 2.2, 2.2, 2.2, 2.3])
+    _set_col_widths(tbl, [1.2, 7, 2.3, 2.3, 2.3, 2.2])
 
     # ── VI. Khả năng phát triển và nguyện vọng (bảng riêng) ──
     doc.add_paragraph()
@@ -732,7 +740,7 @@ def build_phieu_danhgia_report(ten, chuc_vu_day_du, co_quan,
         r0 = cells[0].paragraphs[0].add_run(txt); r0.font.size = Pt(12)
         p1 = cells[1].paragraphs[0]; p1.alignment = WD_ALIGN_PARAGRAPH.CENTER
         r1 = p1.add_run("☑" if idx == vi else "☐"); r1.font.size = Pt(12)
-    _set_col_widths(tbl6, [15, 2])
+    _set_col_widths(tbl6, [15.3, 2])
     doc.add_paragraph()
 
     # ── Tự đánh giá xếp loại + chữ ký ──
