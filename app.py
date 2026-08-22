@@ -41,6 +41,93 @@ UU_TIEN = ["Cao", "Bình thường", "Thấp"]
 VN_THU = ["Thứ Hai", "Thứ Ba", "Thứ Tư", "Thứ Năm", "Thứ Sáu", "Thứ Bảy", "Chủ Nhật"]
 LOAI_VIEC_BC = ["Kế hoạch/thường xuyên", "Phát sinh, đột xuất"]  # dùng cho Biểu 01 tự đánh giá
 
+# ── Dữ liệu tĩnh cho "Phiếu rà soát, đánh giá chất lượng cán bộ" ──
+PDG_I1_ITEMS = [
+    "Trung thành với Đảng, với Tổ quốc và Nhân dân; kiên định lý tưởng cách mạng, chủ nghĩa Mác - Lênin, tư tưởng Hồ Chí Minh. Lập trường, quan điểm, bản lĩnh chính trị vững vàng, không dao động trước mọi khó khăn, thử thách; luôn đặt lợi ích của Đảng, quốc gia, dân tộc, Nhân dân, tập thể lên trên lợi ích cá nhân. Tuyệt đối chấp hành sự phân công của tổ chức, yên tâm công tác và hoàn thành tốt mọi nhiệm vụ được giao.",
+    "Không tham ô, tham nhũng, tiêu cực, lãng phí, quan liêu, cơ hội, vụ lợi, hách dịch, cửa quyền; không có biểu hiện suy thoái về tư tưởng chính trị, đạo đức, lối sống, tự diễn biến, tự chuyển hóa;",
+    "Có lối sống trung thực, khiêm tốn, chân thành, trong sáng, giản dị;",
+    "Có tinh thần đoàn kết, xây dựng cơ quan, tổ chức, đơn vị trong sạch, vững mạnh;",
+    "Không để người thân, người quen lợi dụng chức vụ, quyền hạn của mình để trục lợi.",
+]
+PDG_I1_MUCS = ["Thực hiện tốt", "Đáp ứng", "Cơ bản đáp ứng", "Có biểu hiện suy thoái (*)"]
+PDG_I2_ITEMS = [
+    "Có trách nhiệm với công việc; năng động, sáng tạo, dám nghĩ, dám làm, linh hoạt trong thực hiện nhiệm vụ;",
+    "Phương pháp làm việc khoa học, dân chủ, đúng nguyên tắc;",
+    "Có tinh thần trách nhiệm và phối hợp trong thực hiện nhiệm vụ;",
+    "Có thái độ đúng mực và phong cách ứng xử, lề lối làm việc chuẩn mực, đáp ứng yêu cầu của văn hóa công vụ.",
+]
+PDG_I23_MUCS = ["Thực hiện tốt", "Đáp ứng", "Cơ bản đáp ứng", "Không đáp ứng"]
+PDG_I3_ITEMS = [
+    "Chấp hành sự phân công của tổ chức;",
+    "Thực hiện nghiêm các quy định, quy chế, nội quy của cơ quan, tổ chức, đơn vị nơi công tác;",
+    "Thực hiện việc kê khai và công khai tài sản, thu nhập theo quy định;",
+    "Báo cáo đầy đủ, trung thực, cung cấp thông tin chính xác, khách quan và kịp thời về những nội dung liên quan đến việc thực hiện chức trách, nhiệm vụ được giao và hoạt động của cơ quan, tổ chức, đơn vị với cấp trên khi được yêu cầu.",
+]
+PDG_GHI_CHU_TD = "(*) Theo đánh giá của cấp có thẩm quyền"
+
+PDG_II1_MUCS = [
+    "Phù hợp và đáp ứng theo yêu cầu của VTVL",
+    "Phù hợp nhưng cần phải bồi dưỡng nghiệp vụ bổ sung để đáp ứng theo yêu cầu VTVL",
+    "Chưa phù hợp và cần phải đào tạo bổ sung để đáp ứng theo yêu cầu VTVL",
+    "Chưa phù hợp và không có khả năng đào tạo, bồi dưỡng, không đáp ứng theo yêu cầu của VTVL",
+]
+PDG_II2_MUCS = ["Xuất sắc", "Tốt", "Hoàn thành", "Không hoàn thành"]
+PDG_II3_MUCS = ["HTXSNV", "HTTNV", "HTNV", "KHTNV"]
+PDG_II4_MUCS = ["Số nhiệm vụ vượt tiến độ", "Số nhiệm vụ đúng hạn", "Số nhiệm vụ quá hạn", "Không hoàn thành"]
+PDG_II4_TX_TEXT = ("Tổng số nhiệm vụ thường xuyên, gồm: (1) Tham mưu thực hiện công tác cải cách hành "
+    "chính, chuyển đổi số, ứng dụng công nghệ thông tin trong hoạt động của Ban; theo dõi, tổng hợp "
+    "việc thực hiện các nhiệm vụ liên quan; (2) Tổng hợp, đề xuất danh sách cán bộ, công chức, người "
+    "lao động đến kỳ nâng lương thường xuyên, nâng bậc lương trước thời hạn; theo dõi chế độ nghỉ "
+    "phép hằng năm của cán bộ, công chức; (3) Tham mưu, theo dõi hoạt động Trang thông tin điện tử "
+    "của Ban và các fanpage; (4) Theo dõi, phối hợp tham mưu công tác Tuyên giáo và Dân vận tại các "
+    "Đảng bộ xã theo phân công của lãnh đạo phòng; tham dự các hội nghị, hội thảo liên quan đến "
+    "nhiệm vụ được giao; (5) Thực hiện các nhiệm vụ khác do lãnh đạo Văn phòng phân công.")
+PDG_II4_DX_TEXT = ("Tổng số nhiệm vụ đột xuất, gồm: (1) Xử lý các nhiệm vụ phát sinh về cải cách hành "
+    "chính, chuyển đổi số, ứng dụng công nghệ thông tin; (2) Xử lý, cập nhật, đăng tải thông tin trên "
+    "Trang thông tin điện tử và các fanpage của Ban; (3) Thực hiện các nhiệm vụ đột xuất khác do lãnh "
+    "đạo Văn phòng, lãnh đạo Ban phân công.")
+
+PDG_III1_ITEMS = [
+    "Có tư duy đổi mới, sáng tạo, dám làm, dám chịu trách nhiệm trong quá trình thực hiện chức trách, nhiệm vụ được giao",
+    "Có khả năng tháo gỡ, giải quyết điểm nghẽn, nút thắt việc khó, mới, phức tạp, kéo dài.",
+    "Ứng dụng công nghệ thông tin, chuyển đổi số, khoa học công nghệ trong lĩnh vực được phân công phụ trách.",
+]
+PDG_III2_ITEMS = [
+    "Đã xây dựng Kế hoạch đề xuất đổi mới, sáng tạo và báo cáo cơ quan, đơn vị xem xét, phê duyệt",
+    "Triển khai có hiệu quả cao đối với Kế hoạch đề xuất đổi mới, sáng tạo và được cấp có thẩm quyền công nhận",
+    "Chủ trì tham mưu, đề xuất cấp có thẩm quyền các chủ trương, giải pháp mang lại hiệu quả cao, có tính đột phá, bước ngoặt trong thực hiện nhiệm vụ, công vụ",
+    "Có sáng kiến được công nhận cấp tỉnh trở lên",
+]
+
+PDG_IV1_OPTS = ["Cao", "Trung bình", "Thấp"]
+PDG_IV2_OPTS = ["Tốt", "Khá", "Trung bình", "Yếu kém"]
+PDG_IV3_OPTS = [
+    "Quy hoạch, bổ nhiệm chức vụ cao hơn, giao việc khó, việc mới để rèn luyện",
+    "Quy hoạch chức vụ cao hơn và tiếp tục đào tạo, bồi dưỡng",
+    "Giữ nguyên vị trí công tác",
+    "Đưa ra khỏi quy hoạch hoặc bố trí công tác phù hợp",
+]
+PDG_V1_OPTS = ["Khiển trách", "Cảnh cáo", "Cách chức", "Buộc thôi việc"]
+PDG_V2_OPTS = ["Có liên đới", "Không liên đới"]
+PDG_V3_OPTS = [
+    "Không có đơn thư",
+    "Có đơn, thư đã được xem xét giải quyết không có trách nhiệm liên đới",
+    "Có đơn, thư nhưng chưa hoặc đang xem xét giải quyết",
+]
+PDG_VI_OPTS = [
+    "Bổ nhiệm, giới thiệu bầu cử chức vụ cao hơn",
+    "Giữ nguyên vị trí công tác",
+    "Chuyển đổi vị trí công tác phù hợp năng lực và chuyên môn, nghiệp vụ",
+    "Cử đi đào tạo, bồi dưỡng chuyên môn nghiệp vụ",
+    "Nghỉ công tác để hưởng chế độ bảo hiểm xã hội theo quy định",
+]
+PDG_XL_OPTS = [
+    "Đáp ứng yêu cầu nhiệm vụ theo VTVL và có phẩm chất, năng lực nổi trội",
+    "Đáp ứng yêu cầu nhiệm vụ theo VTVL",
+    "Cơ bản đáp ứng yêu cầu nhiệm vụ theo VTVL",
+    "Không đáp ứng yêu cầu nhiệm vụ theo VTVL",
+]
+
 st.markdown(f"""
 <style>
 .stApp {{ background:#F2F5F9; }}
@@ -381,6 +468,257 @@ def build_bieu01_report(ten, chuc_vu, ky_label, tasks, san_pham_intro, san_pham_
     r = pk.add_run("NGƯỜI TỰ ĐÁNH GIÁ\n"); r.bold = True
     pk.add_run("\n\n\n")
     r2 = pk.add_run(ten); r2.bold = True
+
+    buf = io.BytesIO()
+    doc.save(buf)
+    buf.seek(0)
+    return buf
+
+# ══════════════════════════════════════════════════════
+#  PHIẾU RÀ SOÁT, ĐÁNH GIÁ CHẤT LƯỢNG CÁN BỘ (mới)
+# ══════════════════════════════════════════════════════
+def _pdg_section_row(tbl, ma, ten_section):
+    row = tbl.add_row().cells
+    row[0].paragraphs[0].add_run(ma).bold = True
+    merged = row[1]
+    for c in row[2:]:
+        merged = merged.merge(c)
+    r = merged.paragraphs[0].add_run(ten_section)
+    r.bold = True
+    _shade_cell(row[0], "D9E2F3")
+    _shade_cell(merged, "D9E2F3")
+
+def _pdg_criterion_row(tbl, so, ten_tc, mucs, chon_idx):
+    row = tbl.add_row().cells
+    row[0].paragraphs[0].add_run(so).bold = True
+    r = row[1].paragraphs[0].add_run(ten_tc); r.bold = True
+    for i in range(4):
+        p = row[2 + i].paragraphs[0]
+        mark = "☑ " if i == chon_idx else ""
+        r = p.add_run(mark + mucs[i]); r.bold = True; r.font.size = Pt(8.5)
+
+def _pdg_item_row(tbl, label, text, chon_col):
+    row = tbl.add_row().cells
+    row[0].paragraphs[0].add_run(label)
+    row[1].paragraphs[0].add_run(text).font.size = Pt(9.5)
+    for i in range(4):
+        row[2 + i].text = ""
+    if chon_col is not None:
+        p = row[2 + chon_col].paragraphs[0]
+        p.add_run("☑"); p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+
+def _pdg_options_row(tbl, label, text, options, chon_idx):
+    row = tbl.add_row().cells
+    row[0].paragraphs[0].add_run(label)
+    row[1].paragraphs[0].add_run(text).font.size = Pt(9.5)
+    for i in range(4):
+        c = row[2 + i]
+        if i < len(options):
+            mark = "☑ " if i == chon_idx else "☐ "
+            r = c.paragraphs[0].add_run(mark + options[i]); r.font.size = Pt(8.5)
+        else:
+            c.text = ""
+
+def _pdg_multi_options_row(tbl, label, text, options, chon_idxs):
+    row = tbl.add_row().cells
+    row[0].paragraphs[0].add_run(label)
+    row[1].paragraphs[0].add_run(text).font.size = Pt(9.5)
+    for i in range(4):
+        c = row[2 + i]
+        if i < len(options):
+            mark = "☑ " if i in chon_idxs else "☐ "
+            r = c.paragraphs[0].add_run(mark + options[i]); r.font.size = Pt(8.5)
+        else:
+            c.text = ""
+
+def _pdg_note_row(tbl, text):
+    row = tbl.add_row().cells
+    merged = row[0]
+    for c in row[1:]:
+        merged = merged.merge(c)
+    r = merged.paragraphs[0].add_run(text)
+    r.italic = True; r.font.size = Pt(9)
+
+def build_phieu_danhgia_report(ten, chuc_vu_day_du, co_quan,
+                                i1, i2, i3,
+                                ii1, ii2,
+                                ii3_2025, ii3_2025_qd, ii3_q1, ii3_q1_qd, ii3_q2, ii3_q2_qd,
+                                ii4_tx_idxs, ii4_dx_idxs,
+                                iii1_dat, iii1_text, iii2_dat, iii2_text,
+                                iv1, iv2, iv3,
+                                v1_idxs, v2, v3,
+                                vi, vi_dao_tao_text,
+                                xep_loai_ca_nhan):
+    """Tạo file .docx đúng theo bố cục Phiếu rà soát, đánh giá chất lượng cán bộ (Phụ lục 1)."""
+    doc = Document()
+    for sec in doc.sections:
+        sec.top_margin = Cm(1.7); sec.bottom_margin = Cm(1.7)
+        sec.left_margin = Cm(2); sec.right_margin = Cm(1.7)
+
+    today = datetime.date.today()
+
+    hdr = doc.add_paragraph()
+    r = hdr.add_run("Phụ lục 1"); r.bold = True; r.italic = True; r.font.size = Pt(10)
+
+    hdr_tbl = doc.add_table(rows=1, cols=2)
+    hdr_tbl.autofit = True
+    c0, c1 = hdr_tbl.rows[0].cells
+    p0 = c0.paragraphs[0]; p0.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    r = p0.add_run("TỈNH ỦY TUYÊN QUANG\n"); r.font.size = Pt(11)
+    r = p0.add_run("BAN TUYÊN GIÁO VÀ DÂN VẬN"); r.bold = True; r.font.size = Pt(11)
+    p1 = c1.paragraphs[0]; p1.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    r = p1.add_run("ĐẢNG CỘNG SẢN VIỆT NAM\n"); r.bold = True; r.font.size = Pt(11)
+    r = p1.add_run(f"Tuyên Quang, ngày {today.day} tháng {today.month} năm {today.year}")
+    r.italic = True; r.font.size = Pt(10.5)
+    doc.add_paragraph()
+
+    p_title = doc.add_paragraph(); p_title.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    r = p_title.add_run("PHIẾU RÀ SOÁT, ĐÁNH GIÁ CHẤT LƯỢNG CÁN BỘ")
+    r.bold = True; r.font.size = Pt(13)
+    doc.add_paragraph("―――――")
+
+    doc.add_paragraph().add_run(f"1. Họ và tên: {ten}").bold = True
+    doc.add_paragraph(f"2. Chức vụ, chức danh: {chuc_vu_day_du}.")
+    doc.add_paragraph(f"3. Cơ quan: {co_quan}.")
+    doc.add_paragraph()
+
+    # ── Bảng tiêu chí chính (I - IV) ──
+    tbl = doc.add_table(rows=1, cols=6)
+    tbl.style = "Table Grid"
+    heads = ["STT", "Nội dung", "Mức 1", "Mức 2", "Mức 3", "Mức 4"]
+    _fill_row(tbl.rows[0].cells, heads, size=10, center_cols=(0, 2, 3, 4, 5))
+    _style_header_row(tbl.rows[0])
+
+    _pdg_section_row(tbl, "I", "Tiêu chí đánh giá về phẩm chất đạo đức, tinh thần trách nhiệm, "
+                              "ý thức kỷ luật, kỷ cương trong thực thi nhiệm vụ, công vụ, "
+                              "trách nhiệm nêu gương")
+    _pdg_criterion_row(tbl, "1", "Tư tưởng chính trị, phẩm chất đạo đức", PDG_I1_MUCS, i1)
+    for label, txt in zip(["a)", "b)", "c)", "d)", "đ)"], PDG_I1_ITEMS):
+        _pdg_item_row(tbl, label, txt, i1)
+    _pdg_note_row(tbl, "Ghi chú: " + PDG_GHI_CHU_TD)
+
+    _pdg_criterion_row(tbl, "2", "Tinh thần trách nhiệm", PDG_I23_MUCS, i2)
+    for label, txt in zip(["a)", "b)", "c)", "d)"], PDG_I2_ITEMS):
+        _pdg_item_row(tbl, label, txt, i2)
+
+    _pdg_criterion_row(tbl, "3", "Ý thức kỷ luật, kỷ cương", PDG_I23_MUCS, i3)
+    for label, txt in zip(["a)", "b)", "c)", "d)"], PDG_I3_ITEMS):
+        _pdg_item_row(tbl, label, txt, i3)
+    _pdg_note_row(tbl, "Ghi chú: " + PDG_GHI_CHU_TD)
+
+    _pdg_section_row(tbl, "II", "Nhóm tiêu chí đánh giá về năng lực, trình độ chuyên môn, "
+                               "nghiệp vụ; khả năng đáp ứng yêu cầu về tiến độ, thời gian, "
+                               "chất lượng thực thi nhiệm vụ, công vụ thường xuyên và đột xuất")
+    _pdg_criterion_row(tbl, "1", "Trình độ chuyên môn, nghiệp vụ, kiến thức về khoa học, công "
+                                "nghệ, chuyển đổi số và khả năng đáp ứng theo vị trí việc làm",
+                       PDG_II1_MUCS, ii1)
+    _pdg_criterion_row(tbl, "2", "Năng lực công tác: tư duy đổi mới, phương pháp tiếp cận, giải "
+                                "quyết vấn đề linh hoạt, hiệu quả; năng lực thực tiễn, tổ chức "
+                                "thực hiện, phối hợp, điều hành công việc",
+                       PDG_II2_MUCS, ii2)
+    _pdg_criterion_row(tbl, "3", "Kết quả đánh giá, xếp loại chất lượng năm 2025 và Quý I, Quý II năm 2026",
+                       PDG_II3_MUCS, -1)
+    _pdg_item_row(tbl, "", f"Năm 2025" + (f" ({ii3_2025_qd})" if ii3_2025_qd else ""), ii3_2025)
+    _pdg_item_row(tbl, "", f"Quý I/2026" + (f" ({ii3_q1_qd})" if ii3_q1_qd else ""), ii3_q1)
+    _pdg_item_row(tbl, "", f"Quý II/2026" + (f" ({ii3_q2_qd})" if ii3_q2_qd else ""), ii3_q2)
+    _pdg_criterion_row(tbl, "4", "Về tiến độ, thời gian, chất lượng thực thi nhiệm vụ, công vụ "
+                                "thường xuyên và đột xuất", PDG_II4_MUCS, -1)
+    _pdg_multi_options_row(tbl, "", PDG_II4_TX_TEXT, PDG_II4_MUCS, ii4_tx_idxs)
+    _pdg_multi_options_row(tbl, "", PDG_II4_DX_TEXT, PDG_II4_MUCS, ii4_dx_idxs)
+
+    _pdg_section_row(tbl, "III", "Tiêu chí đánh giá về đổi mới, sáng tạo, chuyển đổi số, ứng "
+                                "dụng khoa học công nghệ, khả năng xử lý việc khó, mới, phức "
+                                "tạp, kéo dài, dám nghĩ, dám làm, dám chịu trách nhiệm vì lợi "
+                                "ích chung và có thành tích tiêu biểu, nổi trội, mang lại lợi "
+                                "ích cho cơ quan, tổ chức, đơn vị")
+    _pdg_criterion_row(tbl, "1", "Đổi mới, sáng tạo, chuyển đổi số, ứng dụng khoa học công nghệ, "
+                                "khả năng xử lý việc khó, mới, phức tạp, kéo dài, dám nghĩ, dám "
+                                "làm, dám chịu trách nhiệm vì lợi ích chung", ["Đạt", "", "Chưa đạt", ""], -1)
+    for txt, dat in zip(PDG_III1_ITEMS, iii1_dat):
+        _pdg_item_row(tbl, "-", txt, 0 if dat else 2)
+    _pdg_note_row(tbl, "Thống kê kết quả tham mưu, thực hiện những công việc có tính chất đổi "
+                       "mới, sáng tạo, đột phá, mang lại hiệu quả rõ rệt, có sản phẩm cụ thể: "
+                       + (iii1_text or "(chưa bổ sung)"))
+
+    _pdg_criterion_row(tbl, "2", "Có thành tích tiêu biểu, nổi trội, mang lại lợi ích cho cơ quan, "
+                                "tổ chức, đơn vị", ["Đạt", "", "Chưa đạt", ""], -1)
+    for txt, dat in zip(PDG_III2_ITEMS, iii2_dat):
+        _pdg_item_row(tbl, "-", txt, 0 if dat else 2)
+    _pdg_note_row(tbl, "Thống kê những sáng kiến, giải pháp được công nhận, và các sáng kiến, "
+                       "giải pháp đã đăng ký và đang triển khai thực hiện: "
+                       + (iii2_text or "(chưa bổ sung)"))
+
+    _pdg_section_row(tbl, "IV", "Về uy tín, khả năng quy tụ, đoàn kết, triển vọng phát triển")
+    _pdg_options_row(tbl, "-", "Uy tín, được cán bộ, đảng viên, quần chúng nhân dân ở địa "
+                              "phương, cơ quan, đơn vị tin tưởng", PDG_IV1_OPTS, iv1)
+    _pdg_options_row(tbl, "-", "Khả năng quy tụ, đoàn kết nội bộ, tạo được sự thống nhất, phát "
+                              "huy được sức mạnh tập thể.", PDG_IV2_OPTS, iv2)
+    _pdg_options_row(tbl, "-", "Triển vọng và phát triển", PDG_IV3_OPTS, iv3)
+
+    _pdg_section_row(tbl, "V", "Về đơn, thư phản ánh khiếu nại, tố cáo, bị kỷ luật, bị xem xét "
+                              "trách nhiệm liên quan đến bản thân và gia đình cán bộ theo quy "
+                              "định; chịu trách nhiệm của người đứng đầu, người trực tiếp phụ "
+                              "trách lĩnh vực.")
+    _pdg_multi_options_row(tbl, "-", "Bị kỷ luật (không bị kỷ luật thì không tích vào các ô)",
+                            PDG_V1_OPTS, v1_idxs)
+    _pdg_options_row(tbl, "-", "Bị xem xét trách nhiệm liên quan đến bản thân và gia đình cán "
+                              "bộ theo quy định", PDG_V2_OPTS, v2)
+    _pdg_options_row(tbl, "-", "Về đơn, thư phản ánh khiếu nại, tố cáo, chịu trách nhiệm của "
+                              "người đứng đầu, người trực tiếp phụ trách lĩnh vực", PDG_V3_OPTS, v3)
+
+    _set_col_widths(tbl, [1, 6, 2.2, 2.2, 2.2, 2.3])
+
+    # ── VI. Khả năng phát triển và nguyện vọng (bảng riêng) ──
+    doc.add_paragraph()
+    h6 = doc.add_paragraph()
+    h6.add_run("VI. Khả năng phát triển và nguyện vọng của cán bộ (lựa chọn 1 trong số nguyện vọng)").bold = True
+    tbl6 = doc.add_table(rows=0, cols=2)
+    tbl6.style = "Table Grid"
+    for idx, opt in enumerate(PDG_VI_OPTS):
+        cells = tbl6.add_row().cells
+        txt = opt
+        if idx == 3 and vi == 3 and vi_dao_tao_text:
+            txt += f" (chuyên môn cần đào tạo: {vi_dao_tao_text})"
+        _fill_row(cells, [txt, "☑" if idx == vi else "☐"], size=10, center_cols=(1,))
+    _set_col_widths(tbl6, [15, 2])
+    doc.add_paragraph()
+
+    # ── Tự đánh giá xếp loại + chữ ký ──
+    ky_tbl = doc.add_table(rows=1, cols=2)
+    ky_tbl.autofit = True
+    left, right = ky_tbl.rows[0].cells
+    lp = left.paragraphs[0]
+    r = lp.add_run("- Cá nhân tự đánh giá, đề xuất mức xếp loại (chọn 1 trong 4 mức sau):")
+    r.bold = True
+    for idx, opt in enumerate(PDG_XL_OPTS):
+        pp = left.add_paragraph()
+        mark = "☑ " if idx == xep_loai_ca_nhan else "☐ "
+        pp.add_run(mark + opt).font.size = Pt(10)
+
+    rp = right.paragraphs[0]; rp.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    r = rp.add_run("NGƯỜI TỰ ĐÁNH GIÁ\n"); r.bold = True
+    r2 = rp.add_run("(Ký và ghi rõ họ tên)"); r2.italic = True; r2.font.size = Pt(9.5)
+    right.add_paragraph()
+    right.add_paragraph()
+    pname = right.add_paragraph(); pname.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    r3 = pname.add_run(ten); r3.bold = True
+    doc.add_paragraph()
+
+    # ── Khu vực dành cho cấp trên (để trống) ──
+    xx_tbl = doc.add_table(rows=1, cols=2)
+    xx_tbl.autofit = True
+    l2, r2c = xx_tbl.rows[0].cells
+    l2.paragraphs[0].add_run("- Ý kiến nhận xét, đánh giá của cấp trên trực tiếp và dự kiến "
+                              "phương án bố trí, sắp xếp:").bold = True
+    for opt in PDG_XL_OPTS:
+        p = l2.add_paragraph(); p.add_run("☐ " + opt).font.size = Pt(10)
+    p_ph = l2.add_paragraph(); p_ph.add_run("Phương án bố trí sắp xếp:").bold = True
+    for opt in PDG_VI_OPTS:
+        p = l2.add_paragraph(); p.add_run("☐ " + opt).font.size = Pt(10)
+
+    rp2 = r2c.paragraphs[0]; rp2.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    r = rp2.add_run("XÁC NHẬN CỦA CƠ QUAN QUẢN LÝ\n"); r.bold = True
+    r2 = rp2.add_run("(Ký, đóng dấu, ghi rõ họ tên)"); r2.italic = True; r2.font.size = Pt(9.5)
 
     buf = io.BytesIO()
     doc.save(buf)
@@ -858,10 +1196,11 @@ elif page == "🗓️ Nhiệm vụ tuần tới":
 elif page == "📄 Báo cáo & Xuất file":
     st.title("📄 Báo cáo & Xuất file")
 
-    tab1, tab2, tab3 = st.tabs([
+    tab1, tab2, tab3, tab4 = st.tabs([
         "📝 Mẫu Tổng hợp BC của CBCC VP (theo tuần)",
         "🗂️ Biểu 01: Phiếu tự đánh giá",
         "📊 Báo cáo tổng hợp theo kỳ",
+        "🧾 Phiếu đánh giá chất lượng cán bộ",
     ])
 
     # ── TAB 1: Mẫu CBCC VP ──
@@ -1006,6 +1345,111 @@ elif page == "📄 Báo cáo & Xuất file":
             buf = build_ky_report(ten, chuc_vu, tu, den, td, d, nhan_xet, phuong_huong)
             st.download_button("📥 Tải file .docx",
                                 data=buf, file_name=f"BaoCao_{td.replace(' ', '_').replace('/', '_')}.docx",
+                                mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document")
+
+    # ── TAB 4: Phiếu đánh giá chất lượng cán bộ ──
+    with tab4:
+        st.caption("Xuất đúng bố cục **Phiếu rà soát, đánh giá chất lượng cán bộ** (Phụ lục 1). "
+                   "Thông tin cá nhân và mục II.4 (tiến độ nhiệm vụ) được tự động lấy từ dữ liệu; "
+                   "các mục còn lại là tự đánh giá chủ quan (phẩm chất, đạo đức, uy tín...) — mặc "
+                   "định theo đúng lựa chọn tốt nhất, bạn điều chỉnh nếu cần trước khi xuất.")
+
+        co_quan = "Ban Tuyên giáo và Dân vận Tỉnh ủy Tuyên Quang"
+        st.markdown(f"**Họ và tên:** {ten}  \n**Chức vụ, chức danh:** {chuc_vu_day_du}  \n"
+                    f"**Cơ quan:** {co_quan}")
+        st.caption("Muốn sửa các thông tin trên (trừ Cơ quan), vào trang Cài đặt.")
+
+        today = datetime.date.today()
+        st.markdown("**Kỳ tham chiếu cho mục II.4 (tiến độ nhiệm vụ thường xuyên/đột xuất)**")
+        tu_pdg, den_pdg, td_pdg = chon_ky("pdg", today)
+        tasks_pdg = db_query(tu_pdg, den_pdg)
+
+        with st.expander("I. Phẩm chất đạo đức, tinh thần trách nhiệm, ý thức kỷ luật", expanded=False):
+            i1 = st.radio("1. Tư tưởng chính trị, phẩm chất đạo đức", PDG_I1_MUCS, index=0, key="pdg_i1")
+            i2 = st.radio("2. Tinh thần trách nhiệm", PDG_I23_MUCS, index=0, key="pdg_i2")
+            i3 = st.radio("3. Ý thức kỷ luật, kỷ cương", PDG_I23_MUCS, index=0, key="pdg_i3")
+
+        with st.expander("II. Năng lực, trình độ chuyên môn; tiến độ thực thi nhiệm vụ", expanded=False):
+            ii1 = st.radio("1. Trình độ chuyên môn, nghiệp vụ và khả năng đáp ứng theo VTVL",
+                           PDG_II1_MUCS, index=0, key="pdg_ii1")
+            ii2 = st.radio("2. Năng lực công tác", PDG_II2_MUCS, index=1, key="pdg_ii2")
+            st.markdown("**3. Kết quả đánh giá, xếp loại chất lượng**")
+            c1, c2 = st.columns(2)
+            ii3_2025 = c1.selectbox("Năm 2025", PDG_II3_MUCS, index=0, key="pdg_ii3_2025")
+            ii3_2025_qd = c2.text_input("Căn cứ (số QĐ, nếu có)", key="pdg_ii3_2025_qd")
+            c3, c4 = st.columns(2)
+            ii3_q1 = c3.selectbox("Quý I/2026", PDG_II3_MUCS, index=1, key="pdg_ii3_q1")
+            ii3_q1_qd = c4.text_input("Căn cứ (số QĐ, nếu có)", key="pdg_ii3_q1_qd")
+            c5, c6 = st.columns(2)
+            ii3_q2 = c5.selectbox("Quý II/2026", PDG_II3_MUCS, index=1, key="pdg_ii3_q2")
+            ii3_q2_qd = c6.text_input("Căn cứ (số QĐ, nếu có)", key="pdg_ii3_q2_qd")
+
+            st.markdown("**4. Về tiến độ, thời gian, chất lượng thực thi nhiệm vụ** "
+                       "*(tự tính từ dữ liệu của kỳ đã chọn ở trên, có thể sửa)*")
+
+            def _ii4_idxs(tasks, loai_tag):
+                idxs = set()
+                for t in tasks:
+                    if (t.get("loai_viec_bc") or "Kế hoạch/thường xuyên") != loai_tag:
+                        continue
+                    if t["trang_thai"] != "Hoàn thành":
+                        idxs.add(3); continue
+                    dg = _danh_gia_tien_do(t)
+                    if dg == "Vượt thời gian yêu cầu": idxs.add(0)
+                    elif dg == "Đúng thời gian yêu cầu": idxs.add(1)
+                    elif dg == "Chậm so với yêu cầu": idxs.add(2)
+                return sorted(idxs)
+
+            default_tx = [PDG_II4_MUCS[i] for i in _ii4_idxs(tasks_pdg, "Kế hoạch/thường xuyên")]
+            default_dx = [PDG_II4_MUCS[i] for i in _ii4_idxs(tasks_pdg, "Phát sinh, đột xuất")]
+            chon_tx = st.multiselect("Nhiệm vụ thường xuyên", PDG_II4_MUCS, default=default_tx, key="pdg_ii4_tx")
+            chon_dx = st.multiselect("Nhiệm vụ đột xuất", PDG_II4_MUCS, default=default_dx, key="pdg_ii4_dx")
+
+        with st.expander("III. Đổi mới, sáng tạo, chuyển đổi số; thành tích tiêu biểu", expanded=False):
+            st.markdown("**1. Đổi mới, sáng tạo, chuyển đổi số, ứng dụng khoa học công nghệ**")
+            iii1_dat = [st.checkbox(txt, value=True, key=f"pdg_iii1_{i}") for i, txt in enumerate(PDG_III1_ITEMS)]
+            iii1_text = st.text_area("Thống kê kết quả tham mưu, sản phẩm cụ thể", height=80, key="pdg_iii1_text")
+            st.markdown("**2. Thành tích tiêu biểu, nổi trội**")
+            iii2_dat = [st.checkbox(txt, value=True, key=f"pdg_iii2_{i}") for i, txt in enumerate(PDG_III2_ITEMS)]
+            iii2_text = st.text_area("Thống kê sáng kiến, giải pháp đã đăng ký/triển khai", height=80, key="pdg_iii2_text")
+
+        with st.expander("IV. Uy tín, khả năng quy tụ, đoàn kết, triển vọng phát triển", expanded=False):
+            iv1 = st.radio("Uy tín, được tin tưởng", PDG_IV1_OPTS, index=0, key="pdg_iv1")
+            iv2 = st.radio("Khả năng quy tụ, đoàn kết nội bộ", PDG_IV2_OPTS, index=0, key="pdg_iv2")
+            iv3 = st.radio("Triển vọng và phát triển", PDG_IV3_OPTS, index=2, key="pdg_iv3")
+
+        with st.expander("V. Kỷ luật, đơn thư khiếu nại tố cáo", expanded=False):
+            v1_chon = st.multiselect("Bị kỷ luật (để trống nếu không bị kỷ luật)", PDG_V1_OPTS,
+                                     default=[], key="pdg_v1")
+            v2 = st.radio("Bị xem xét trách nhiệm liên quan đến bản thân, gia đình", PDG_V2_OPTS,
+                         index=1, key="pdg_v2")
+            v3 = st.radio("Đơn, thư phản ánh khiếu nại, tố cáo", PDG_V3_OPTS, index=0, key="pdg_v3")
+
+        with st.expander("VI. Khả năng phát triển và nguyện vọng", expanded=False):
+            vi = st.radio("Nguyện vọng", PDG_VI_OPTS, index=1, key="pdg_vi")
+            vi_dao_tao_text = ""
+            if vi == PDG_VI_OPTS[3]:
+                vi_dao_tao_text = st.text_input("Ghi rõ chuyên môn cần đào tạo", key="pdg_vi_dt")
+
+        xep_loai_ca_nhan = st.radio("Cá nhân tự đánh giá, đề xuất mức xếp loại", PDG_XL_OPTS,
+                                    index=1, key="pdg_xl")
+
+        if st.button("⬇ Xuất file Word — Phiếu đánh giá chất lượng cán bộ", type="primary"):
+            buf = build_phieu_danhgia_report(
+                ten, chuc_vu_day_du, co_quan,
+                PDG_I1_MUCS.index(i1), PDG_I23_MUCS.index(i2), PDG_I23_MUCS.index(i3),
+                PDG_II1_MUCS.index(ii1), PDG_II2_MUCS.index(ii2),
+                PDG_II3_MUCS.index(ii3_2025), ii3_2025_qd, PDG_II3_MUCS.index(ii3_q1), ii3_q1_qd,
+                PDG_II3_MUCS.index(ii3_q2), ii3_q2_qd,
+                [PDG_II4_MUCS.index(x) for x in chon_tx], [PDG_II4_MUCS.index(x) for x in chon_dx],
+                iii1_dat, iii1_text, iii2_dat, iii2_text,
+                PDG_IV1_OPTS.index(iv1), PDG_IV2_OPTS.index(iv2), PDG_IV3_OPTS.index(iv3),
+                [PDG_V1_OPTS.index(x) for x in v1_chon], PDG_V2_OPTS.index(v2), PDG_V3_OPTS.index(v3),
+                PDG_VI_OPTS.index(vi), vi_dao_tao_text,
+                PDG_XL_OPTS.index(xep_loai_ca_nhan),
+            )
+            st.download_button("📥 Tải file .docx", data=buf,
+                                file_name=f"PhieuDanhGia_{ten.replace(' ', '_')}.docx",
                                 mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document")
 
 # ══════════════════════════════════════════════════════
