@@ -551,6 +551,38 @@ def _pdg_mini_checklist(cell, options, chosen, multi=False):
     _set_col_widths(mini, [11, 1.5])
     return mini
 
+def _set_font_times_new_roman(doc):
+    """Ép toàn bộ văn bản (kể cả bảng lồng nhau) về font Times New Roman."""
+    def _font_run(r):
+        r.font.name = "Times New Roman"
+        rPr = r._element.get_or_add_rPr()
+        rFonts = rPr.find(qn('w:rFonts'))
+        if rFonts is None:
+            rFonts = OxmlElement('w:rFonts')
+            rPr.append(rFonts)
+        for attr in ("w:ascii", "w:hAnsi", "w:eastAsia", "w:cs"):
+            rFonts.set(qn(attr), "Times New Roman")
+
+    def _walk_paragraphs(paragraphs):
+        for p in paragraphs:
+            for r in p.runs:
+                _font_run(r)
+
+    def _walk_tables(tables):
+        for table in tables:
+            for row in table.rows:
+                for cell in row.cells:
+                    _walk_paragraphs(cell.paragraphs)
+                    _walk_tables(cell.tables)
+
+    for style_name in ("Normal",):
+        try:
+            doc.styles[style_name].font.name = "Times New Roman"
+        except Exception:
+            pass
+    _walk_paragraphs(doc.paragraphs)
+    _walk_tables(doc.tables)
+
 def build_phieu_danhgia_report(ten, chuc_vu_day_du, co_quan,
                                 i1, i2, i3,
                                 ii1, ii2,
@@ -569,19 +601,21 @@ def build_phieu_danhgia_report(ten, chuc_vu_day_du, co_quan,
 
     today = datetime.date.today()
 
-    hdr_tbl = doc.add_table(rows=1, cols=2)
+    hdr_tbl = doc.add_table(rows=3, cols=2)
     hdr_tbl.autofit = True
-    c0, c1 = hdr_tbl.rows[0].cells
-    p0 = c0.paragraphs[0]; p0.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    r = p0.add_run("TỈNH ỦY TUYÊN QUANG\n"); r.font.size = Pt(14)
-    r = p0.add_run("BAN TUYÊN GIÁO VÀ DÂN VẬN"); r.bold = True; r.font.size = Pt(14)
 
-    p_pl = c1.paragraphs[0]; p_pl.alignment = WD_ALIGN_PARAGRAPH.RIGHT
-    r = p_pl.add_run("Phụ lục 1"); r.bold = True; r.font.size = Pt(14)
-    p1 = c1.add_paragraph(); p1.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    r = p1.add_run("ĐẢNG CỘNG SẢN VIỆT NAM"); r.bold = True; r.font.size = Pt(14)
-    p2 = c1.add_paragraph(); p2.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    r = p2.add_run(f"Tuyên Quang, ngày {today.day} tháng {today.month} năm {today.year}")
+    p = hdr_tbl.rows[0].cells[0].paragraphs[0]; p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    r = p.add_run("TỈNH ỦY TUYÊN QUANG"); r.font.size = Pt(14)
+    p = hdr_tbl.rows[0].cells[1].paragraphs[0]; p.alignment = WD_ALIGN_PARAGRAPH.RIGHT
+    r = p.add_run("Phụ lục 1"); r.bold = True; r.font.size = Pt(14)
+
+    p = hdr_tbl.rows[1].cells[0].paragraphs[0]; p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    r = p.add_run("BAN TUYÊN GIÁO VÀ DÂN VẬN"); r.bold = True; r.font.size = Pt(14)
+    p = hdr_tbl.rows[1].cells[1].paragraphs[0]; p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    r = p.add_run("ĐẢNG CỘNG SẢN VIỆT NAM"); r.bold = True; r.font.size = Pt(15)
+
+    p = hdr_tbl.rows[2].cells[1].paragraphs[0]; p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    r = p.add_run(f"Tuyên Quang, ngày {today.day} tháng {today.month} năm {today.year}")
     r.italic = True; r.font.size = Pt(14)
     doc.add_paragraph()
 
@@ -590,9 +624,9 @@ def build_phieu_danhgia_report(ten, chuc_vu_day_du, co_quan,
     r.bold = True; r.font.size = Pt(14)
     doc.add_paragraph("―――――")
 
-    p = doc.add_paragraph(); r = p.add_run(f"1. Họ và tên: {ten}"); r.bold = True; r.font.size = Pt(12)
-    p = doc.add_paragraph(); r = p.add_run(f"2. Chức vụ, chức danh: {chuc_vu_day_du}."); r.font.size = Pt(12)
-    p = doc.add_paragraph(); r = p.add_run(f"3. Cơ quan: {co_quan}."); r.font.size = Pt(12)
+    p = doc.add_paragraph(); r = p.add_run(f"1. Họ và tên: {ten}"); r.bold = True; r.font.size = Pt(14)
+    p = doc.add_paragraph(); r = p.add_run(f"2. Chức vụ, chức danh: {chuc_vu_day_du.rstrip('.')}."); r.font.size = Pt(14)
+    p = doc.add_paragraph(); r = p.add_run(f"3. Cơ quan: {co_quan.rstrip('.')}."); r.font.size = Pt(14)
     doc.add_paragraph()
 
     # ── Bảng tiêu chí chính (I - IV) ──
@@ -733,6 +767,8 @@ def build_phieu_danhgia_report(ten, chuc_vu_day_du, co_quan,
     r = rp2.add_run("XÁC NHẬN CỦA CƠ QUAN QUẢN LÝ"); r.bold = True; r.font.size = Pt(14)
     p3 = right1.add_paragraph(); p3.alignment = WD_ALIGN_PARAGRAPH.CENTER
     r3 = p3.add_run("TRƯỞNG BAN"); r3.bold = True; r3.font.size = Pt(14)
+
+    _set_font_times_new_roman(doc)
 
     buf = io.BytesIO()
     doc.save(buf)
@@ -1374,9 +1410,17 @@ elif page == "📄 Báo cáo & Xuất file":
         st.caption("Muốn sửa các thông tin trên (trừ Cơ quan), vào trang Cài đặt.")
 
         today = datetime.date.today()
-        st.markdown("**Kỳ tham chiếu cho mục II.4 (tiến độ nhiệm vụ thường xuyên/đột xuất)**")
+        st.markdown("**Kỳ tham chiếu** (dùng cho mục II.4 — tiến độ nhiệm vụ, và mục III — thống kê sản phẩm/sáng kiến)")
         tu_pdg, den_pdg, td_pdg = chon_ky("pdg", today)
         tasks_pdg = db_query(tu_pdg, den_pdg)
+        noi_bat_pdg = [t for t in tasks_pdg if t.get("loai") == "Xây dựng ứng dụng chuyển đổi số"
+                       and t["trang_thai"] == "Hoàn thành"]
+        if noi_bat_pdg:
+            _ke = "; ".join(f"({i}) {t['title']}" + (f" — {t['ket_qua']}" if t.get("ket_qua") else "")
+                            for i, t in enumerate(noi_bat_pdg, 1))
+            default_iii_stat = f"Trong {td_pdg}, đã tham mưu, phối hợp thực hiện: {_ke}."
+        else:
+            default_iii_stat = ""
 
         with st.expander("I. Phẩm chất đạo đức, tinh thần trách nhiệm, ý thức kỷ luật", expanded=False):
             i1 = st.radio("1. Tư tưởng chính trị, phẩm chất đạo đức", PDG_I1_MUCS, index=0, key="pdg_i1")
@@ -1420,12 +1464,16 @@ elif page == "📄 Báo cáo & Xuất file":
             chon_dx = st.multiselect("Nhiệm vụ đột xuất", PDG_II4_MUCS, default=default_dx, key="pdg_ii4_dx")
 
         with st.expander("III. Đổi mới, sáng tạo, chuyển đổi số; thành tích tiêu biểu", expanded=False):
+            st.caption("Ô thống kê bên dưới đã tự điền từ công việc loại *Xây dựng ứng dụng chuyển "
+                      "đổi số* đã hoàn thành trong kỳ đã chọn ở trên — bạn có thể sửa lại tự do.")
             st.markdown("**1. Đổi mới, sáng tạo, chuyển đổi số, ứng dụng khoa học công nghệ**")
             iii1_dat = [st.checkbox(txt, value=True, key=f"pdg_iii1_{i}") for i, txt in enumerate(PDG_III1_ITEMS)]
-            iii1_text = st.text_area("Thống kê kết quả tham mưu, sản phẩm cụ thể", height=80, key="pdg_iii1_text")
+            iii1_text = st.text_area("Thống kê kết quả tham mưu, sản phẩm cụ thể", value=default_iii_stat,
+                                     height=80, key="pdg_iii1_text")
             st.markdown("**2. Thành tích tiêu biểu, nổi trội**")
             iii2_dat = [st.checkbox(txt, value=True, key=f"pdg_iii2_{i}") for i, txt in enumerate(PDG_III2_ITEMS)]
-            iii2_text = st.text_area("Thống kê sáng kiến, giải pháp đã đăng ký/triển khai", height=80, key="pdg_iii2_text")
+            iii2_text = st.text_area("Thống kê sáng kiến, giải pháp đã đăng ký/triển khai", value=default_iii_stat,
+                                     height=80, key="pdg_iii2_text")
 
         with st.expander("IV. Uy tín, khả năng quy tụ, đoàn kết, triển vọng phát triển", expanded=False):
             iv1 = st.radio("Uy tín, được tin tưởng", PDG_IV1_OPTS, index=0, key="pdg_iv1")
