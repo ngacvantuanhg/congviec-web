@@ -479,55 +479,54 @@ def build_bieu01_report(ten, chuc_vu, ky_label, tasks, san_pham_intro, san_pham_
 # ══════════════════════════════════════════════════════
 def _pdg_section_row(tbl, ma, ten_section):
     row = tbl.add_row().cells
-    row[0].paragraphs[0].add_run(ma).bold = True
+    r = row[0].paragraphs[0].add_run(ma); r.bold = True; r.font.size = Pt(14)
     merged = row[1]
     for c in row[2:]:
         merged = merged.merge(c)
     r = merged.paragraphs[0].add_run(ten_section)
-    r.bold = True
-    _shade_cell(row[0], "D9E2F3")
-    _shade_cell(merged, "D9E2F3")
+    r.bold = True; r.font.size = Pt(14)
 
 def _pdg_criterion_row(tbl, so, ten_tc, mucs, chon_idx):
     row = tbl.add_row().cells
-    row[0].paragraphs[0].add_run(so).bold = True
-    r = row[1].paragraphs[0].add_run(ten_tc); r.bold = True
+    r = row[0].paragraphs[0].add_run(so); r.bold = True; r.font.size = Pt(12)
+    r = row[1].paragraphs[0].add_run(ten_tc); r.bold = True; r.font.size = Pt(12)
     for i in range(4):
         p = row[2 + i].paragraphs[0]
         mark = "☑ " if i == chon_idx else ""
-        r = p.add_run(mark + mucs[i]); r.bold = True; r.font.size = Pt(8.5)
+        r = p.add_run(mark + mucs[i]); r.bold = True; r.font.size = Pt(12)
 
 def _pdg_item_row(tbl, label, text, chon_col):
     row = tbl.add_row().cells
-    row[0].paragraphs[0].add_run(label)
-    row[1].paragraphs[0].add_run(text).font.size = Pt(9.5)
+    r = row[0].paragraphs[0].add_run(label); r.font.size = Pt(12)
+    r = row[1].paragraphs[0].add_run(text); r.font.size = Pt(12)
     for i in range(4):
         row[2 + i].text = ""
     if chon_col is not None:
         p = row[2 + chon_col].paragraphs[0]
-        p.add_run("☑"); p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        r = p.add_run("☑"); r.font.size = Pt(12)
+        p.alignment = WD_ALIGN_PARAGRAPH.CENTER
 
 def _pdg_options_row(tbl, label, text, options, chon_idx):
     row = tbl.add_row().cells
-    row[0].paragraphs[0].add_run(label)
-    row[1].paragraphs[0].add_run(text).font.size = Pt(9.5)
+    r = row[0].paragraphs[0].add_run(label); r.font.size = Pt(12)
+    r = row[1].paragraphs[0].add_run(text); r.font.size = Pt(12)
     for i in range(4):
         c = row[2 + i]
         if i < len(options):
             mark = "☑ " if i == chon_idx else "☐ "
-            r = c.paragraphs[0].add_run(mark + options[i]); r.font.size = Pt(8.5)
+            r = c.paragraphs[0].add_run(mark + options[i]); r.font.size = Pt(12)
         else:
             c.text = ""
 
 def _pdg_multi_options_row(tbl, label, text, options, chon_idxs):
     row = tbl.add_row().cells
-    row[0].paragraphs[0].add_run(label)
-    row[1].paragraphs[0].add_run(text).font.size = Pt(9.5)
+    r = row[0].paragraphs[0].add_run(label); r.font.size = Pt(12)
+    r = row[1].paragraphs[0].add_run(text); r.font.size = Pt(12)
     for i in range(4):
         c = row[2 + i]
         if i < len(options):
             mark = "☑ " if i in chon_idxs else "☐ "
-            r = c.paragraphs[0].add_run(mark + options[i]); r.font.size = Pt(8.5)
+            r = c.paragraphs[0].add_run(mark + options[i]); r.font.size = Pt(12)
         else:
             c.text = ""
 
@@ -537,7 +536,20 @@ def _pdg_note_row(tbl, text):
     for c in row[1:]:
         merged = merged.merge(c)
     r = merged.paragraphs[0].add_run(text)
-    r.italic = True; r.font.size = Pt(9)
+    r.italic = True; r.font.size = Pt(12)
+
+def _pdg_mini_checklist(cell, options, chosen, multi=False):
+    """Bảng phụ 2 cột (nội dung | ô vuông) chèn trong 1 ô của bảng ngoài."""
+    mini = cell.add_table(rows=0, cols=2)
+    mini.style = "Table Grid"
+    for idx, opt in enumerate(options):
+        cells = mini.add_row().cells
+        r0 = cells[0].paragraphs[0].add_run(opt); r0.font.size = Pt(12)
+        p1 = cells[1].paragraphs[0]; p1.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        is_checked = (idx in chosen) if multi else (idx == chosen)
+        r1 = p1.add_run("☑" if is_checked else "☐"); r1.font.size = Pt(12)
+    _set_col_widths(mini, [11, 1.5])
+    return mini
 
 def build_phieu_danhgia_report(ten, chuc_vu_day_du, co_quan,
                                 i1, i2, i3,
@@ -557,37 +569,40 @@ def build_phieu_danhgia_report(ten, chuc_vu_day_du, co_quan,
 
     today = datetime.date.today()
 
-    hdr = doc.add_paragraph()
-    r = hdr.add_run("Phụ lục 1"); r.bold = True; r.italic = True; r.font.size = Pt(10)
-
     hdr_tbl = doc.add_table(rows=1, cols=2)
     hdr_tbl.autofit = True
     c0, c1 = hdr_tbl.rows[0].cells
     p0 = c0.paragraphs[0]; p0.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    r = p0.add_run("TỈNH ỦY TUYÊN QUANG\n"); r.font.size = Pt(11)
-    r = p0.add_run("BAN TUYÊN GIÁO VÀ DÂN VẬN"); r.bold = True; r.font.size = Pt(11)
-    p1 = c1.paragraphs[0]; p1.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    r = p1.add_run("ĐẢNG CỘNG SẢN VIỆT NAM\n"); r.bold = True; r.font.size = Pt(11)
-    r = p1.add_run(f"Tuyên Quang, ngày {today.day} tháng {today.month} năm {today.year}")
-    r.italic = True; r.font.size = Pt(10.5)
+    r = p0.add_run("TỈNH ỦY TUYÊN QUANG\n"); r.font.size = Pt(14)
+    r = p0.add_run("BAN TUYÊN GIÁO VÀ DÂN VẬN"); r.bold = True; r.font.size = Pt(14)
+
+    p_pl = c1.paragraphs[0]; p_pl.alignment = WD_ALIGN_PARAGRAPH.RIGHT
+    r = p_pl.add_run("Phụ lục 1"); r.bold = True; r.font.size = Pt(14)
+    p1 = c1.add_paragraph(); p1.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    r = p1.add_run("ĐẢNG CỘNG SẢN VIỆT NAM"); r.bold = True; r.font.size = Pt(14)
+    p2 = c1.add_paragraph(); p2.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    r = p2.add_run(f"Tuyên Quang, ngày {today.day} tháng {today.month} năm {today.year}")
+    r.italic = True; r.font.size = Pt(14)
     doc.add_paragraph()
 
     p_title = doc.add_paragraph(); p_title.alignment = WD_ALIGN_PARAGRAPH.CENTER
     r = p_title.add_run("PHIẾU RÀ SOÁT, ĐÁNH GIÁ CHẤT LƯỢNG CÁN BỘ")
-    r.bold = True; r.font.size = Pt(13)
+    r.bold = True; r.font.size = Pt(14)
     doc.add_paragraph("―――――")
 
-    doc.add_paragraph().add_run(f"1. Họ và tên: {ten}").bold = True
-    doc.add_paragraph(f"2. Chức vụ, chức danh: {chuc_vu_day_du}.")
-    doc.add_paragraph(f"3. Cơ quan: {co_quan}.")
+    p = doc.add_paragraph(); r = p.add_run(f"1. Họ và tên: {ten}"); r.bold = True; r.font.size = Pt(12)
+    p = doc.add_paragraph(); r = p.add_run(f"2. Chức vụ, chức danh: {chuc_vu_day_du}."); r.font.size = Pt(12)
+    p = doc.add_paragraph(); r = p.add_run(f"3. Cơ quan: {co_quan}."); r.font.size = Pt(12)
     doc.add_paragraph()
 
     # ── Bảng tiêu chí chính (I - IV) ──
     tbl = doc.add_table(rows=1, cols=6)
     tbl.style = "Table Grid"
     heads = ["STT", "Nội dung", "Mức 1", "Mức 2", "Mức 3", "Mức 4"]
-    _fill_row(tbl.rows[0].cells, heads, size=10, center_cols=(0, 2, 3, 4, 5))
-    _style_header_row(tbl.rows[0])
+    for i, h in enumerate(heads):
+        p = tbl.rows[0].cells[i].paragraphs[0]
+        p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        r = p.add_run(h); r.bold = True; r.font.size = Pt(14)
 
     _pdg_section_row(tbl, "I", "Tiêu chí đánh giá về phẩm chất đạo đức, tinh thần trách nhiệm, "
                               "ý thức kỷ luật, kỷ cương trong thực thi nhiệm vụ, công vụ, "
@@ -671,7 +686,8 @@ def build_phieu_danhgia_report(ten, chuc_vu_day_du, co_quan,
     # ── VI. Khả năng phát triển và nguyện vọng (bảng riêng) ──
     doc.add_paragraph()
     h6 = doc.add_paragraph()
-    h6.add_run("VI. Khả năng phát triển và nguyện vọng của cán bộ (lựa chọn 1 trong số nguyện vọng)").bold = True
+    r = h6.add_run("VI. Khả năng phát triển và nguyện vọng của cán bộ (lựa chọn 1 trong số nguyện vọng)")
+    r.bold = True; r.font.size = Pt(14)
     tbl6 = doc.add_table(rows=0, cols=2)
     tbl6.style = "Table Grid"
     for idx, opt in enumerate(PDG_VI_OPTS):
@@ -679,46 +695,44 @@ def build_phieu_danhgia_report(ten, chuc_vu_day_du, co_quan,
         txt = opt
         if idx == 3 and vi == 3 and vi_dao_tao_text:
             txt += f" (chuyên môn cần đào tạo: {vi_dao_tao_text})"
-        _fill_row(cells, [txt, "☑" if idx == vi else "☐"], size=10, center_cols=(1,))
+        r0 = cells[0].paragraphs[0].add_run(txt); r0.font.size = Pt(12)
+        p1 = cells[1].paragraphs[0]; p1.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        r1 = p1.add_run("☑" if idx == vi else "☐"); r1.font.size = Pt(12)
     _set_col_widths(tbl6, [15, 2])
     doc.add_paragraph()
 
     # ── Tự đánh giá xếp loại + chữ ký ──
-    ky_tbl = doc.add_table(rows=1, cols=2)
-    ky_tbl.autofit = True
-    left, right = ky_tbl.rows[0].cells
-    lp = left.paragraphs[0]
-    r = lp.add_run("- Cá nhân tự đánh giá, đề xuất mức xếp loại (chọn 1 trong 4 mức sau):")
-    r.bold = True
-    for idx, opt in enumerate(PDG_XL_OPTS):
-        pp = left.add_paragraph()
-        mark = "☑ " if idx == xep_loai_ca_nhan else "☐ "
-        pp.add_run(mark + opt).font.size = Pt(10)
+    outer_tbl = doc.add_table(rows=2, cols=2)
+    outer_tbl.autofit = True
 
-    rp = right.paragraphs[0]; rp.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    r = rp.add_run("NGƯỜI TỰ ĐÁNH GIÁ\n"); r.bold = True
-    r2 = rp.add_run("(Ký và ghi rõ họ tên)"); r2.italic = True; r2.font.size = Pt(9.5)
-    right.add_paragraph()
-    right.add_paragraph()
-    pname = right.add_paragraph(); pname.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    r3 = pname.add_run(ten); r3.bold = True
-    doc.add_paragraph()
+    left0, right0 = outer_tbl.rows[0].cells
+    p = left0.paragraphs[0]
+    r = p.add_run("- Cá nhân tự đánh giá, đề xuất mức xếp loại (chọn 1 trong 4 mức sau):")
+    r.bold = True; r.font.size = Pt(12)
+    _pdg_mini_checklist(left0, PDG_XL_OPTS, xep_loai_ca_nhan)
 
-    # ── Khu vực dành cho cấp trên (để trống) ──
-    xx_tbl = doc.add_table(rows=1, cols=2)
-    xx_tbl.autofit = True
-    l2, r2c = xx_tbl.rows[0].cells
-    l2.paragraphs[0].add_run("- Ý kiến nhận xét, đánh giá của cấp trên trực tiếp và dự kiến "
-                              "phương án bố trí, sắp xếp:").bold = True
-    for opt in PDG_XL_OPTS:
-        p = l2.add_paragraph(); p.add_run("☐ " + opt).font.size = Pt(10)
-    p_ph = l2.add_paragraph(); p_ph.add_run("Phương án bố trí sắp xếp:").bold = True
-    for opt in PDG_VI_OPTS:
-        p = l2.add_paragraph(); p.add_run("☐ " + opt).font.size = Pt(10)
+    rp = right0.paragraphs[0]; rp.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    r = rp.add_run("Người tự đánh giá"); r.bold = True; r.font.size = Pt(14)
+    p2 = right0.add_paragraph(); p2.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    r2 = p2.add_run("(Ký và ghi rõ họ tên)"); r2.italic = True; r2.font.size = Pt(14)
+    right0.add_paragraph(); right0.add_paragraph()
+    pname = right0.add_paragraph(); pname.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    r3 = pname.add_run(ten); r3.bold = True; r3.font.size = Pt(14)
 
-    rp2 = r2c.paragraphs[0]; rp2.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    r = rp2.add_run("XÁC NHẬN CỦA CƠ QUAN QUẢN LÝ\n"); r.bold = True
-    r2 = rp2.add_run("(Ký, đóng dấu, ghi rõ họ tên)"); r2.italic = True; r2.font.size = Pt(9.5)
+    left1, right1 = outer_tbl.rows[1].cells
+    p = left1.paragraphs[0]
+    r = p.add_run("- Ý kiến nhận xét, đánh giá của cấp trên trực tiếp và dự kiến phương án bố "
+                  "trí, sắp xếp:")
+    r.bold = True; r.font.size = Pt(12)
+    _pdg_mini_checklist(left1, PDG_XL_OPTS, -1)
+    p_ph = left1.add_paragraph()
+    r_ph = p_ph.add_run("Phương án bố trí sắp xếp:"); r_ph.bold = True; r_ph.font.size = Pt(12)
+    _pdg_mini_checklist(left1, PDG_VI_OPTS, -1)
+
+    rp2 = right1.paragraphs[0]; rp2.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    r = rp2.add_run("XÁC NHẬN CỦA CƠ QUAN QUẢN LÝ"); r.bold = True; r.font.size = Pt(14)
+    p3 = right1.add_paragraph(); p3.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    r3 = p3.add_run("TRƯỞNG BAN"); r3.bold = True; r3.font.size = Pt(14)
 
     buf = io.BytesIO()
     doc.save(buf)
