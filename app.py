@@ -1,6 +1,6 @@
 """
 PHẦN MỀM QUẢN LÝ CÔNG TÁC CÁ NHÂN — BẢN WEB (Streamlit + Supabase)
-Ban Tuyên giáo và Dân vận Tỉnh ủy Tuyên Quang
+Ban Tuyên giáo Tỉnh ủy Tuyên Quang
 """
 import io
 import calendar
@@ -20,7 +20,7 @@ from docx.oxml import OxmlElement
 # ══════════════════════════════════════════════════════
 #  CẤU HÌNH CHUNG
 # ══════════════════════════════════════════════════════
-st.set_page_config(page_title="Quản lý Công tác Cá nhân — Ban TG&DV Tuyên Quang",
+st.set_page_config(page_title="Quản lý Công tác Cá nhân — Ban Tuyên giáo Tỉnh ủy Tuyên Quang",
                     page_icon="⭐", layout="wide")
 
 NAVY  = "#1B3A6B"
@@ -79,7 +79,7 @@ PDG_II4_TX_TEXT = ("Tổng số nhiệm vụ thường xuyên, gồm: (1) Tham m
     "việc thực hiện các nhiệm vụ liên quan; (2) Tổng hợp, đề xuất danh sách cán bộ, công chức, người "
     "lao động đến kỳ nâng lương thường xuyên, nâng bậc lương trước thời hạn; theo dõi chế độ nghỉ "
     "phép hằng năm của cán bộ, công chức; (3) Tham mưu, theo dõi hoạt động Trang thông tin điện tử "
-    "của Ban và các fanpage; (4) Theo dõi, phối hợp tham mưu công tác Tuyên giáo và Dân vận tại các "
+    "của Ban và các fanpage; (4) Theo dõi, phối hợp tham mưu công tác Tuyên giáo tại các "
     "Đảng bộ xã theo phân công của lãnh đạo phòng; tham dự các hội nghị, hội thảo liên quan đến "
     "nhiệm vụ được giao; (5) Thực hiện các nhiệm vụ khác do lãnh đạo Văn phòng phân công.")
 PDG_II4_DX_TEXT = ("Tổng số nhiệm vụ đột xuất, gồm: (1) Xử lý các nhiệm vụ phát sinh về cải cách hành "
@@ -618,7 +618,7 @@ def build_phieu_danhgia_report(ten, chuc_vu_day_du, co_quan,
     r = p.add_run("Phụ lục 1"); r.bold = True; r.font.size = Pt(14)
 
     p = hdr_tbl.rows[1].cells[0].paragraphs[0]; p.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    r = p.add_run("BAN TUYÊN GIÁO VÀ DÂN VẬN"); r.bold = True; r.font.size = Pt(14)
+    r = p.add_run("BAN TUYÊN GIÁO"); r.bold = True; r.font.size = Pt(14)
     p = hdr_tbl.rows[1].cells[1].paragraphs[0]; p.alignment = WD_ALIGN_PARAGRAPH.CENTER
     r = p.add_run("ĐẢNG CỘNG SẢN VIỆT NAM"); r.bold = True; r.font.size = Pt(15)
 
@@ -879,7 +879,7 @@ def build_ky_report(ten, chuc_vu, tu, den, td, d, nhan_xet, phuong_huong):
     p0 = doc.add_paragraph(); p0.alignment = WD_ALIGN_PARAGRAPH.CENTER
     r = p0.add_run("ĐẢNG CỘNG SẢN VIỆT NAM\n"); r.bold = True; r.font.size = Pt(13)
     r = p0.add_run("TỈNH ỦY TUYÊN QUANG\n"); r.bold = True; r.font.size = Pt(12)
-    r = p0.add_run("Ban Tuyên giáo và Dân vận\n"); r.font.size = Pt(11)
+    r = p0.add_run("Ban Tuyên giáo\n"); r.font.size = Pt(11)
     doc.add_paragraph()
 
     pt2 = doc.add_paragraph(); pt2.alignment = WD_ALIGN_PARAGRAPH.CENTER
@@ -989,7 +989,7 @@ chuc_vu_day_du = cfg_get("chuc_vu_day_du", "") or chuc_vu
 
 with st.sidebar:
     st.markdown(f"### ⭐ TỈNH ỦY TUYÊN QUANG")
-    st.caption("Ban Tuyên giáo & Dân vận")
+    st.caption("Ban Tuyên giáo")
     st.markdown(f"**👤 {ten}**")
     st.caption(chuc_vu)
     st.divider()
@@ -1412,7 +1412,7 @@ elif page == "📄 Báo cáo & Xuất file":
                    "các mục còn lại là tự đánh giá chủ quan (phẩm chất, đạo đức, uy tín...) — mặc "
                    "định theo đúng lựa chọn tốt nhất, bạn điều chỉnh nếu cần trước khi xuất.")
 
-        co_quan = "Ban Tuyên giáo và Dân vận Tỉnh ủy Tuyên Quang"
+        co_quan = "Ban Tuyên giáo Tỉnh ủy Tuyên Quang"
         st.markdown(f"**Họ và tên:** {ten}  \n**Chức vụ, chức danh:** {chuc_vu_day_du}  \n"
                     f"**Cơ quan:** {co_quan}")
         st.caption("Muốn sửa các thông tin trên (trừ Cơ quan), vào trang Cài đặt.")
@@ -1532,7 +1532,7 @@ elif page == "⚙️ Cài đặt":
     new_cv_dd = st.text_area(
         "Chức vụ, đơn vị đầy đủ (dùng trong Biểu 01 — mục \"Chức vụ, đơn vị\")",
         value=chuc_vu_day_du, height=70,
-        placeholder="VD: Chuyên viên Văn phòng Ban Tuyên giáo và Dân vận Tỉnh ủy Tuyên Quang.")
+        placeholder="VD: Chuyên viên Văn phòng Ban Tuyên giáo Tỉnh ủy Tuyên Quang.")
     if st.button("💾 Lưu thay đổi", type="primary"):
         if not new_ten.strip():
             st.warning("Họ tên không được trống!")
