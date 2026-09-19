@@ -900,23 +900,24 @@ def build_cv1619_workbook(thong_tin_cn, tasks, diem_toi_da_a, diem_toi_da_b,
     from openpyxl.styles import Font, Alignment, Border, Side, PatternFill
     from openpyxl.utils import get_column_letter
 
+    FONT = "Times New Roman"
     wb = Workbook()
-    bold = Font(bold=True)
-    bold14 = Font(bold=True, size=14)
-    italic = Font(italic=True)
+    default_font = Font(name=FONT, size=11)
+    bold = Font(name=FONT, bold=True)
+    bold14 = Font(name=FONT, bold=True, size=14)
+    italic = Font(name=FONT, italic=True)
     center = Alignment(horizontal="center", vertical="center", wrap_text=True)
     wrap = Alignment(vertical="top", wrap_text=True)
     thin = Side(style="thin")
     border = Border(left=thin, right=thin, top=thin, bottom=thin)
     hdr_fill = PatternFill("solid", fgColor="1B3A6B")
-    hdr_font = Font(bold=True, color="FFFFFF")
+    hdr_font = Font(name=FONT, bold=True, color="FFFFFF")
 
     def _cell(ws, coord, value=None, font=None, align=None, fill=None, brd=False):
         c = ws[coord]
         if value is not None:
             c.value = value
-        if font:
-            c.font = font
+        c.font = font or default_font
         if align:
             c.alignment = align
         if fill:
@@ -924,6 +925,14 @@ def build_cv1619_workbook(thong_tin_cn, tasks, diem_toi_da_a, diem_toi_da_b,
         if brd:
             c.border = border
         return c
+
+    def _border_row(ws, r, col_from=1, col_to=18):
+        """Kẻ viền cho cả dòng (dùng cho các dòng có ô gộp, vì viền phải áp
+        cho từng ô trong vùng gộp thì mới hiện đủ quanh cả dòng)."""
+        for i in range(col_from, col_to + 1):
+            ws.cell(row=r, column=i).border = border
+            if ws.cell(row=r, column=i).font is None or ws.cell(row=r, column=i).font.name != FONT:
+                ws.cell(row=r, column=i).font = default_font
 
     # ── SHEET 1: MauDG (Bản tự đánh giá, xếp loại của cá nhân) ──
     ws = wb.active
@@ -969,6 +978,7 @@ def build_cv1619_workbook(thong_tin_cn, tasks, diem_toi_da_a, diem_toi_da_b,
         _cell(ws, f"A{r0}", nhom_so, bold, brd=True)
         _cell(ws, f"B{r0}", nhom_ten, bold, wrap, brd=True)
         ws.merge_cells(f"B{r0}:E{r0}")
+        _border_row(ws, r0, 1, 5)
         r0 += 1
         for item in items:
             _cell(ws, f"A{r0}", "", brd=True)
@@ -1049,6 +1059,7 @@ def build_cv1619_workbook(thong_tin_cn, tasks, diem_toi_da_a, diem_toi_da_b,
         _cell(ws, f"A{r}", nhom_label, bold)
         _cell(ws, f"B{r}", nhom_title, bold)
         ws.merge_cells(f"B{r}:R{r}")
+        _border_row(ws, r)
         r += 1
         start_data_row = r
         for truc in TRUC_LIST:
@@ -1056,8 +1067,10 @@ def build_cv1619_workbook(thong_tin_cn, tasks, diem_toi_da_a, diem_toi_da_b,
             _cell(ws, f"A{r}", truc, bold)
             _cell(ws, f"B{r}", f"{TRUC_TEN[truc]} ({TRUC_DIEM_KHOI_DANG[truc]}%={TRUC_DIEM_KHOI_DANG[truc]} điểm)", bold, wrap)
             ws.merge_cells(f"B{r}:R{r}")
+            _border_row(ws, r)
             r += 1
             if not tasks_truc:
+                _border_row(ws, r)
                 r += 1
                 continue
             for t in tasks_truc:
@@ -1086,13 +1099,16 @@ def build_cv1619_workbook(thong_tin_cn, tasks, diem_toi_da_a, diem_toi_da_b,
         _cell(ws, f"M{r}", round(tong_m, 2), bold, center)
         _cell(ws, f"O{r}", round(tong_o, 2), bold, center)
         _cell(ws, f"R{r}", round(tong_r, 2), bold, center)
+        _border_row(ws, r)
         r += 1
         _cell(ws, f"B{r}", f"ĐIỂM KPI NHÓM {nhom_label} = (A+B+C)/3", bold)
         _cell(ws, f"C{r}", round(kpi * 100, 1), bold, center)
+        _border_row(ws, r)
         r += 1
         diem_th = kpi * diem_toi_da
         _cell(ws, f"B{r}", f"ĐIỂM THỰC HIỆN NHÓM {nhom_label} = KPI × điểm tối đa ({diem_toi_da})", bold)
         _cell(ws, f"C{r}", round(diem_th, 2), bold, center)
+        _border_row(ws, r)
         r += 2
         return r, diem_th
 
@@ -1100,6 +1116,7 @@ def build_cv1619_workbook(thong_tin_cn, tasks, diem_toi_da_a, diem_toi_da_b,
     r, diem_b2 = _viet_nhom(ws2, r, "B", "NHÓM B: NHIỆM VỤ TRỌNG TÂM, THEN CHỐT", ht_b, diem_toi_da_b)
     _cell(ws2, f"B{r}", "TỔNG ĐIỂM KẾT QUẢ THỰC HIỆN NHIỆM VỤ (A+B)", bold14)
     _cell(ws2, f"C{r}", round(diem_a2 + diem_b2, 2), bold14, center)
+    _border_row(ws2, r)
 
     # ── SHEET 3, 4: giữ nguyên bảng tra cứu để đối chiếu (không chỉnh sửa) ──
     ws3 = wb.create_sheet("Quydoi (tra cứu)")
