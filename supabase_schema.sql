@@ -30,6 +30,14 @@ create table if not exists tasks (
     phoi_hop            text,                                -- Đơn vị/người phối hợp
     loai_viec_bc        text default 'Kế hoạch/thường xuyên', -- Kế hoạch/thường xuyên | Phát sinh, đột xuất
     tu_danh_gia_cl      text,                                -- Tự đánh giá chất lượng công tác tham mưu
+    -- Cột mới cho "Đánh giá cán bộ theo Công văn 1619-CV/TU":
+    truc                 text default 'Trục 1',
+    nhom_ab              text default 'A - Nhiệm vụ thường xuyên',
+    can_cu_nv            text,
+    so_luong_ke_hoach    integer default 1,
+    nhom_kho             text default 'N2',
+    so_luong_thuc_te     integer,
+    he_so_chat_luong     numeric default 1.0,
     created_at    timestamptz default now()
 );
 
@@ -65,6 +73,15 @@ alter table tasks add column if not exists chu_tri boolean default true;
 alter table tasks add column if not exists phoi_hop text;
 alter table tasks add column if not exists loai_viec_bc text default 'Kế hoạch/thường xuyên';
 alter table tasks add column if not exists tu_danh_gia_cl text;
+
+-- Bổ sung cho "Đánh giá cán bộ theo Công văn 1619-CV/TU" (Quý III/2026 trở đi):
+alter table tasks add column if not exists truc text default 'Trục 1';
+alter table tasks add column if not exists nhom_ab text default 'A - Nhiệm vụ thường xuyên';
+alter table tasks add column if not exists can_cu_nv text;
+alter table tasks add column if not exists so_luong_ke_hoach integer default 1;
+alter table tasks add column if not exists nhom_kho text default 'N2';
+alter table tasks add column if not exists so_luong_thuc_te integer;
+alter table tasks add column if not exists he_so_chat_luong numeric default 1.0;
 
 -- Index phục vụ lọc theo khoảng ngày (dùng nhiều trong báo cáo/lịch)
 create index if not exists idx_tasks_ngay on tasks (ngay_bd, ngay_kt);
