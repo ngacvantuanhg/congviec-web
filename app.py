@@ -128,6 +128,62 @@ PDG_XL_OPTS = [
     "Không đáp ứng yêu cầu nhiệm vụ theo VTVL",
 ]
 
+# ── Dữ liệu tĩnh cho "Đánh giá cán bộ theo Công văn 1619-CV/TU" (Quý III/2026) ──
+TRUC_LIST = ["Trục 1", "Trục 2", "Trục 3", "Trục 4", "Trục 5", "Trục 6"]
+TRUC_TEN = {
+    "Trục 1": "Kết quả thực hiện nhiệm vụ chính trị và phát triển kinh tế - xã hội",
+    "Trục 2": "Xây dựng hoàn thiện thể chế, tổ chức thực thi và phân cấp, phân quyền",
+    "Trục 3": "Phát triển khoa học, công nghệ, đổi mới sáng tạo, chuyển đổi số và dữ liệu",
+    "Trục 4": "Xây dựng Đảng, hệ thống chính trị, tổ chức bộ máy, đội ngũ cán bộ và liêm chính",
+    "Trục 5": "Phục vụ nhân dân, phát triển con người, văn hóa và xã hội",
+    "Trục 6": "Thực hiện nhiệm vụ quốc phòng, an ninh, đối ngoại và hội nhập quốc tế",
+}
+# Trọng số điểm theo cột "khối Đảng" (Tytrong!F6:F11) — tổng 100 điểm
+TRUC_DIEM_KHOI_DANG = {"Trục 1": 30, "Trục 2": 15, "Trục 3": 5, "Trục 4": 40, "Trục 5": 5, "Trục 6": 5}
+NHOM_AB = ["A - Nhiệm vụ thường xuyên", "B - Nhiệm vụ trọng tâm, then chốt"]
+NHOM_KHO_LIST = ["N1", "N2", "N3", "N4", "N5"]
+NHOM_KHO_DIEM = {"N1": 20, "N2": 40, "N3": 60, "N4": 80, "N5": 100}
+NHOM_KHO_HESO = {"N1": 1, "N2": 2, "N3": 3, "N4": 4, "N5": 5}
+NHOM_KHO_GOI_Y = {
+    "N1": "Đơn giản — quy trình rõ, có biểu mẫu/quy định sẵn",
+    "N2": "Trung bình — chuyên môn theo quy định/hướng dẫn đã có",
+    "N3": "Khá khó — cần phân tích, tổng hợp, phối hợp",
+    "N4": "Khó, phức tạp — nhiều yếu tố, chưa có đầy đủ hướng dẫn",
+    "N5": "Rất khó/then chốt — mới, chưa có tiền lệ, cần đột phá",
+}
+HE_SO_CL_OPTS = [
+    ("Hoàn thành và vượt chỉ tiêu / SP được chấp nhận ngay", 1.0),
+    ("Hoàn thành 80-99% / SP cơ bản đáp ứng, chỉnh sửa nhỏ", 0.75),
+    ("Hoàn thành 60-79% / SP phải chỉnh sửa nội dung cơ bản", 0.5),
+    ("Hoàn thành 50-59% / SP có sai sót nghiêm trọng", 0.25),
+    ("Hoàn thành dưới 50% / SP không đạt yêu cầu", 0.0),
+]
+MAUDG_TIEUCHI = [
+    (1, "Về phẩm chất chính trị, đạo đức, lối sống, thực hiện trách nhiệm nêu gương", [
+        "1.1. Tuyệt đối trung thành với Đảng, Tổ quốc và Nhân dân; kiên định chủ nghĩa Mác - Lênin, tư tưởng Hồ Chí Minh, mục tiêu độc lập dân tộc và chủ nghĩa xã hội.",
+        "1.2. Có tinh thần yêu nước sâu sắc, tận tụy phục vụ Nhân dân, sâu sát cơ sở, luôn hành động vì lợi ích của Nhân dân.",
+        "1.3. Chấp hành nghiêm chủ trương, đường lối, nghị quyết, chỉ thị, quy định, nguyên tắc tổ chức, kỷ luật của Đảng và pháp luật của Nhà nước.",
+        "1.4. Có tinh thần tự giác, trách nhiệm cao trong nghiên cứu, học tập chủ nghĩa Mác - Lênin, tư tưởng Hồ Chí Minh, các nghị quyết, chỉ thị của Đảng.",
+        "1.5. Có phẩm chất đạo đức, lối sống trong sáng, trung thực, khiêm tốn, chân thành, giản dị; không né tránh công việc, chạy theo thành tích.",
+        "1.6. Không tham vọng quyền lực; không chạy chức, chạy quyền; không tham nhũng, lãng phí, cơ hội, vụ lợi.",
+        "1.7. Có uy tín cao, tiêu biểu về phẩm chất đạo đức và phong cách công tác; là trung tâm đoàn kết.",
+        "1.8. Có tinh thần chủ động, đổi mới sáng tạo; phấn đấu vì mục tiêu phát triển của cơ quan, đơn vị.",
+        "1.9. Thực hiện việc kê khai và công khai tài sản, thu nhập theo quy định; báo cáo đầy đủ, trung thực với cấp trên khi được yêu cầu.",
+    ]),
+    (2, "Tư duy đổi mới, chiến lược, khát vọng cống hiến, dám nghĩ, dám làm", [
+        "2.1. Có tư duy đổi mới, tầm nhìn chiến lược, phương pháp làm việc khoa học, nhạy bén chính trị.",
+        "2.2. Luôn bám sát thực tiễn, có nhiều cách làm hay, sáng tạo, đạt hiệu quả cao trong tổ chức thực hiện nhiệm vụ.",
+        "2.3. Nói đi đôi với làm, dám nghĩ, dám làm, dám chịu trách nhiệm, dám đột phá vì lợi ích chung.",
+        "2.4. Có khát vọng phấn đấu, cống hiến; có khả năng quy tụ và phát huy sức mạnh của tập thể.",
+    ]),
+    (3, "Về tự phê bình và phê bình, tự soi, tự sửa, khắc phục hạn chế, khuyết điểm", [
+        "3.1. Chủ động, nghiêm túc thực hiện tự phê bình và phê bình, có tinh thần cầu thị và tiếp thu phản biện, góp ý.",
+        "3.2. Có kế hoạch rõ ràng, quyết liệt trong khắc phục hạn chế, khuyết điểm đã được chỉ ra.",
+        "3.3. Kết quả khắc phục hoàn thành từ ≥ 80% nội dung, có tiến bộ rõ; không để tái diễn tồn tại.",
+        "3.4. Tự soi, tự sửa trên tinh thần trách nhiệm chính trị cao, không né tránh, không đổ lỗi.",
+    ]),
+]
+
 st.markdown(f"""
 <style>
 .stApp {{ background:#F2F5F9; }}
@@ -784,6 +840,285 @@ def build_phieu_danhgia_report(ten, chuc_vu_day_du, co_quan,
     return buf
 
 # ══════════════════════════════════════════════════════
+#  ĐÁNH GIÁ CÁN BỘ THEO CÔNG VĂN 1619-CV/TU (mới, xuất .xlsx)
+# ══════════════════════════════════════════════════════
+def _q_tien_do(thoi_han, ngay_hoan_thanh):
+    """Hệ số tiến độ theo bảng Quy đổi: vượt/đúng hạn=1; chậm N ngày = 1-0.05N
+    (tối đa trừ hết ở chậm 10 ngày); chậm trên 10 ngày hoặc chưa hoàn thành = 0."""
+    if not ngay_hoan_thanh:
+        return 0.0
+    if not thoi_han:
+        return 1.0
+    try:
+        d_han = datetime.date.fromisoformat(str(thoi_han))
+        d_kt = datetime.date.fromisoformat(str(ngay_hoan_thanh))
+    except Exception:
+        return 1.0
+    if d_kt <= d_han:
+        return 1.0
+    cham = (d_kt - d_han).days
+    if cham > 10:
+        return 0.0
+    return round(max(0.0, 1 - 0.05 * cham), 2)
+
+def _cv1619_tinh_kpi(tasks_nhom):
+    """tasks_nhom: list các dict đã có đủ trường (nhom_kho, so_luong_ke_hoach,
+    so_luong_thuc_te, he_so_chat_luong, thoi_han_vb, ngay_kt).
+    Trả về (kpi 0..1, tong_j, tong_m, tong_o, tong_r, rows_tinh) — rows_tinh
+    là list kèm các cột đã tính cho từng dòng, dùng để xuất Excel."""
+    tong_j = tong_m = tong_o = tong_r = 0.0
+    rows_tinh = []
+    for t in tasks_nhom:
+        nk = t.get("nhom_kho") or "N2"
+        j = NHOM_KHO_HESO.get(nk, 2)
+        e = t.get("so_luong_ke_hoach") or 1
+        k = t.get("so_luong_thuc_te") if t.get("so_luong_thuc_te") is not None else (
+            e if t.get("trang_thai") == "Hoàn thành" else 0)
+        l = (k / e) if e else 0
+        m = j * l
+        n = t.get("he_so_chat_luong")
+        n = 1.0 if n is None else n
+        o = m * n
+        q = _q_tien_do(t.get("thoi_han_vb"), t.get("ngay_kt") if t.get("trang_thai") == "Hoàn thành" else None)
+        r = m * q
+        tong_j += j; tong_m += m; tong_o += o; tong_r += r
+        rows_tinh.append(dict(task=t, j=j, e=e, k=k, l=l, m=m, n=n, o=o, q=q, r=r))
+    if tong_j == 0:
+        return 0.0, 0, 0, 0, 0, rows_tinh
+    A = tong_m / tong_j
+    B = tong_o / tong_j
+    C = tong_r / tong_j
+    kpi = (A + B + C) / 3
+    return kpi, tong_j, tong_m, tong_o, tong_r, rows_tinh
+
+def build_cv1619_workbook(thong_tin_cn, tasks, diem_toi_da_a, diem_toi_da_b,
+                          khong_dam_bao, xep_loai_de_xuat, ky_label):
+    """Xuất file .xlsx theo đúng cấu trúc Bản tự đánh giá (MauDG) + Phụ lục 2
+    khối Đảng (PL2.khoiDang) của Công văn 1619-CV/TU — số dòng theo đúng số
+    nhiệm vụ thực tế (không giới hạn như bảng mẫu gốc)."""
+    from openpyxl import Workbook
+    from openpyxl.styles import Font, Alignment, Border, Side, PatternFill
+    from openpyxl.utils import get_column_letter
+
+    wb = Workbook()
+    bold = Font(bold=True)
+    bold14 = Font(bold=True, size=14)
+    italic = Font(italic=True)
+    center = Alignment(horizontal="center", vertical="center", wrap_text=True)
+    wrap = Alignment(vertical="top", wrap_text=True)
+    thin = Side(style="thin")
+    border = Border(left=thin, right=thin, top=thin, bottom=thin)
+    hdr_fill = PatternFill("solid", fgColor="1B3A6B")
+    hdr_font = Font(bold=True, color="FFFFFF")
+
+    def _cell(ws, coord, value=None, font=None, align=None, fill=None, brd=False):
+        c = ws[coord]
+        if value is not None:
+            c.value = value
+        if font:
+            c.font = font
+        if align:
+            c.alignment = align
+        if fill:
+            c.fill = fill
+        if brd:
+            c.border = border
+        return c
+
+    # ── SHEET 1: MauDG (Bản tự đánh giá, xếp loại của cá nhân) ──
+    ws = wb.active
+    ws.title = "MauDG"
+    ws.sheet_view.showGridLines = False
+    for col, w in zip("ABCDE", [6, 46, 12, 12, 12]):
+        ws.column_dimensions[col].width = w
+
+    _cell(ws, "A1", "TỈNH ỦY TUYÊN QUANG", bold)
+    _cell(ws, "C1", "ĐẢNG CỘNG SẢN VIỆT NAM", bold)
+    _cell(ws, "A2", "BAN TUYÊN GIÁO")
+    today = datetime.date.today()
+    _cell(ws, "C2", f"Tuyên Quang, ngày {today.day} tháng {today.month} năm {today.year}", italic)
+    _cell(ws, "A4", "BẢN TỰ ĐÁNH GIÁ, XẾP LOẠI CỦA CÁ NHÂN", bold14, center)
+    ws.merge_cells("A4:E4")
+    _cell(ws, "A5", ky_label, bold, center)
+    ws.merge_cells("A5:E5")
+    _cell(ws, "A6", "(Kèm theo Công văn số 1619-CV/TU, ngày 16/9/2026 của Ban Thường vụ Tỉnh ủy)", italic, center)
+    ws.merge_cells("A6:E6")
+
+    r0 = 8
+    for label, val in [
+        ("Họ và tên", thong_tin_cn["ten"]), ("Ngày sinh", thong_tin_cn.get("ngay_sinh") or ""),
+        ("Chức vụ Đảng", thong_tin_cn.get("chuc_vu_dang") or ""),
+        ("Chức vụ chính quyền", thong_tin_cn.get("chuc_vu_cq") or ""),
+        ("Chức vụ đoàn thể", thong_tin_cn.get("chuc_vu_dt") or ""),
+        ("Đơn vị công tác", thong_tin_cn.get("don_vi_ct") or ""),
+    ]:
+        _cell(ws, f"A{r0}", f"{label}: {val}")
+        ws.merge_cells(f"A{r0}:E{r0}")
+        r0 += 1
+
+    r0 += 1
+    _cell(ws, f"A{r0}", "I. NHÓM TIÊU CHÍ CHUNG: tự đánh giá và đánh dấu X vào cột tương ứng", bold)
+    ws.merge_cells(f"A{r0}:E{r0}")
+    r0 += 1
+    heads = ["TT", "Tiêu chí/Nội dung", "Đảm bảo (X)", "Không đảm bảo (X)"]
+    for i, h in enumerate(heads):
+        c = _cell(ws, f"{get_column_letter(i+1)}{r0}", h, hdr_font, center, hdr_fill, True)
+    ws.merge_cells(f"D{r0}:E{r0}")
+    r0 += 1
+    for nhom_so, nhom_ten, items in MAUDG_TIEUCHI:
+        _cell(ws, f"A{r0}", nhom_so, bold, brd=True)
+        _cell(ws, f"B{r0}", nhom_ten, bold, wrap, brd=True)
+        ws.merge_cells(f"B{r0}:E{r0}")
+        r0 += 1
+        for item in items:
+            _cell(ws, f"A{r0}", "", brd=True)
+            _cell(ws, f"B{r0}", item, None, wrap, brd=True)
+            ws.merge_cells(f"B{r0}:B{r0}")
+            dam_bao = item not in khong_dam_bao
+            _cell(ws, f"C{r0}", "X" if dam_bao else "", None, center, brd=True)
+            ws.merge_cells(f"C{r0}:C{r0}")
+            _cell(ws, f"D{r0}", "" if dam_bao else "X", None, center, brd=True)
+            ws.merge_cells(f"D{r0}:E{r0}")
+            r0 += 1
+
+    r0 += 1
+    _cell(ws, f"A{r0}", "II. NHÓM KẾT QUẢ THỰC HIỆN NHIỆM VỤ (chi tiết tại Phụ lục 2 — sheet PL2)", bold)
+    ws.merge_cells(f"A{r0}:E{r0}")
+    r0 += 1
+    heads2 = ["TT", "Nhiệm vụ", "Điểm KPI", "Điểm tối đa", "Điểm đạt được"]
+    for i, h in enumerate(heads2):
+        _cell(ws, f"{get_column_letter(i+1)}{r0}", h, hdr_font, center, hdr_fill, True)
+    r0 += 1
+
+    ht_a = [t for t in tasks if (t.get("nhom_ab") or NHOM_AB[0]) == NHOM_AB[0]]
+    ht_b = [t for t in tasks if (t.get("nhom_ab") or NHOM_AB[0]) == NHOM_AB[1]]
+    kpi_a, *_ = _cv1619_tinh_kpi(ht_a)
+    kpi_b, *_ = _cv1619_tinh_kpi(ht_b)
+    diem_a = kpi_a * diem_toi_da_a
+    diem_b = kpi_b * diem_toi_da_b
+    tong_diem = diem_a + diem_b
+
+    for lbl, ten_nhom, kpi, dtd, diem in [
+        ("A", "Nhóm nhiệm vụ thường xuyên", kpi_a, diem_toi_da_a, diem_a),
+        ("B", "Nhóm nhiệm vụ trọng tâm then chốt", kpi_b, diem_toi_da_b, diem_b),
+    ]:
+        _cell(ws, f"A{r0}", lbl, None, center, brd=True)
+        _cell(ws, f"B{r0}", ten_nhom, None, wrap, brd=True)
+        _cell(ws, f"C{r0}", round(kpi * 100, 1), None, center, brd=True)
+        _cell(ws, f"D{r0}", dtd, None, center, brd=True)
+        _cell(ws, f"E{r0}", round(diem, 2), None, center, brd=True)
+        r0 += 1
+    _cell(ws, f"B{r0}", "Tổng điểm", bold, brd=True)
+    _cell(ws, f"C{r0}", "", None, center, brd=True)
+    _cell(ws, f"D{r0}", diem_toi_da_a + diem_toi_da_b, bold, center, brd=True)
+    _cell(ws, f"E{r0}", round(tong_diem, 2), bold, center, brd=True)
+    r0 += 2
+
+    _cell(ws, f"A{r0}", f"2. Cá nhân tự đề xuất mức xếp loại chất lượng: {xep_loai_de_xuat}", bold)
+    ws.merge_cells(f"A{r0}:E{r0}")
+    r0 += 3
+    _cell(ws, f"C{r0}", "CÁ NHÂN TỰ ĐÁNH GIÁ\n(Ký, ghi rõ họ tên)", bold, center)
+    ws.merge_cells(f"C{r0}:E{r0}")
+    r0 += 4
+    _cell(ws, f"C{r0}", thong_tin_cn["ten"], bold, center)
+    ws.merge_cells(f"C{r0}:E{r0}")
+
+    # ── SHEET 2: PL2 (Phụ lục 2 khối Đảng) ──
+    ws2 = wb.create_sheet("PL2.khoiDang")
+    ws2.sheet_view.showGridLines = False
+    widths = [4, 24, 18, 20, 8, 12, 6, 7, 7, 7, 9, 8, 9, 8, 9, 12, 8, 9]
+    for i, w in enumerate(widths):
+        ws2.column_dimensions[get_column_letter(i + 1)].width = w
+
+    _cell(ws2, "A1", "PHỤ LỤC 2: ĐỊNH HƯỚNG KHUNG DANH MỤC SẢN PHẨM/CÔNG VIỆC — KHỐI ĐẢNG", bold14)
+    ws2.merge_cells("A1:R1")
+    _cell(ws2, "A2", f"Họ và tên: {thong_tin_cn['ten']}      Chức vụ: {thong_tin_cn.get('chuc_vu_cq') or ''}      {ky_label}")
+    ws2.merge_cells("A2:R2")
+
+    r = 4
+    heads3 = ["STT", "Nhiệm vụ đề ra", "Căn cứ xác định nhiệm vụ", "Sản phẩm/kết quả",
+              "Số lượng phải TH", "Tiến độ/thời hạn", "Nhóm độ khó", "Hệ số quy đổi",
+              "Điểm theo danh mục", "Tổng điểm quy đổi", "Thực tế hoàn thành", "% mức độ HT",
+              "Điểm TH theo SL", "Hệ số chất lượng", "Điểm TH theo CL", "Ngày hoàn thành",
+              "Hệ số tiến độ", "Điểm TH theo TĐ"]
+    for i, h in enumerate(heads3):
+        _cell(ws2, f"{get_column_letter(i+1)}{r}", h, hdr_font, center, hdr_fill, True)
+    r += 1
+
+    def _viet_nhom(ws, r, nhom_label, nhom_title, tasks_nhom, diem_toi_da):
+        _cell(ws, f"A{r}", nhom_label, bold)
+        _cell(ws, f"B{r}", nhom_title, bold)
+        ws.merge_cells(f"B{r}:R{r}")
+        r += 1
+        start_data_row = r
+        for truc in TRUC_LIST:
+            tasks_truc = [t for t in tasks_nhom if (t.get("truc") or TRUC_LIST[0]) == truc]
+            _cell(ws, f"A{r}", truc, bold)
+            _cell(ws, f"B{r}", f"{TRUC_TEN[truc]} ({TRUC_DIEM_KHOI_DANG[truc]}%={TRUC_DIEM_KHOI_DANG[truc]} điểm)", bold, wrap)
+            ws.merge_cells(f"B{r}:R{r}")
+            r += 1
+            if not tasks_truc:
+                r += 1
+                continue
+            for t in tasks_truc:
+                nk = t.get("nhom_kho") or "N2"
+                j = NHOM_KHO_HESO.get(nk, 2)
+                i_diem = NHOM_KHO_DIEM.get(nk, 40)
+                e = t.get("so_luong_ke_hoach") or 1
+                k = t.get("so_luong_thuc_te") if t.get("so_luong_thuc_te") is not None else (
+                    e if t.get("trang_thai") == "Hoàn thành" else 0)
+                n = t.get("he_so_chat_luong"); n = 1.0 if n is None else n
+                q = _q_tien_do(t.get("thoi_han_vb"), t.get("ngay_kt") if t.get("trang_thai") == "Hoàn thành" else None)
+                vals = [
+                    "", t["title"], t.get("can_cu_nv") or "", t.get("ket_qua") or "",
+                    e, _fmt_d(t.get("thoi_han_vb")), nk, j, i_diem, j,
+                    k, f"=K{r}/E{r}", f"=J{r}*L{r}", n, f"=M{r}*N{r}",
+                    _fmt_d(t.get("ngay_kt")) if t.get("trang_thai") == "Hoàn thành" else "",
+                    q, f"=M{r}*Q{r}",
+                ]
+                for i, v in enumerate(vals):
+                    c = _cell(ws, f"{get_column_letter(i+1)}{r}", v, None, wrap if i in (1, 2, 3) else center, brd=True)
+                r += 1
+        end_data_row = r - 1
+        kpi, tong_j, tong_m, tong_o, tong_r, _ = _cv1619_tinh_kpi(tasks_nhom)
+        _cell(ws, f"B{r}", f"TỔNG ĐIỂM NHÓM {nhom_label}", bold)
+        _cell(ws, f"J{r}", round(tong_j, 2), bold, center)
+        _cell(ws, f"M{r}", round(tong_m, 2), bold, center)
+        _cell(ws, f"O{r}", round(tong_o, 2), bold, center)
+        _cell(ws, f"R{r}", round(tong_r, 2), bold, center)
+        r += 1
+        _cell(ws, f"B{r}", f"ĐIỂM KPI NHÓM {nhom_label} = (A+B+C)/3", bold)
+        _cell(ws, f"C{r}", round(kpi * 100, 1), bold, center)
+        r += 1
+        diem_th = kpi * diem_toi_da
+        _cell(ws, f"B{r}", f"ĐIỂM THỰC HIỆN NHÓM {nhom_label} = KPI × điểm tối đa ({diem_toi_da})", bold)
+        _cell(ws, f"C{r}", round(diem_th, 2), bold, center)
+        r += 2
+        return r, diem_th
+
+    r, diem_a2 = _viet_nhom(ws2, r, "A", "NHÓM A: NHIỆM VỤ THƯỜNG XUYÊN", ht_a, diem_toi_da_a)
+    r, diem_b2 = _viet_nhom(ws2, r, "B", "NHÓM B: NHIỆM VỤ TRỌNG TÂM, THEN CHỐT", ht_b, diem_toi_da_b)
+    _cell(ws2, f"B{r}", "TỔNG ĐIỂM KẾT QUẢ THỰC HIỆN NHIỆM VỤ (A+B)", bold14)
+    _cell(ws2, f"C{r}", round(diem_a2 + diem_b2, 2), bold14, center)
+
+    # ── SHEET 3, 4: giữ nguyên bảng tra cứu để đối chiếu (không chỉnh sửa) ──
+    ws3 = wb.create_sheet("Quydoi (tra cứu)")
+    ws3.sheet_view.showGridLines = False
+    _cell(ws3, "A1", "QUY ĐỔI ĐIỂM THEO NHÓM ĐỘ KHÓ", bold)
+    for i, nk in enumerate(NHOM_KHO_LIST, start=2):
+        _cell(ws3, f"A{i}", nk); _cell(ws3, f"B{i}", NHOM_KHO_DIEM[nk]); _cell(ws3, f"C{i}", NHOM_KHO_GOI_Y[nk])
+    _cell(ws3, "A9", "QUY ĐỔI CHẤT LƯỢNG", bold)
+    for i, (lbl, val) in enumerate(HE_SO_CL_OPTS, start=10):
+        _cell(ws3, f"A{i}", lbl); _cell(ws3, f"B{i}", val)
+    ws3.column_dimensions["A"].width = 55
+    ws3.column_dimensions["C"].width = 45
+
+    buf = io.BytesIO()
+    wb.save(buf)
+    buf.seek(0)
+    return buf
+
+# ══════════════════════════════════════════════════════
 #  BÁO CÁO TỔNG HỢP THEO KỲ (kế thừa bản desktop)
 # ══════════════════════════════════════════════════════
 XL_MUC = ["Tự động (theo kết quả)", "Hoàn thành xuất sắc nhiệm vụ",
@@ -986,6 +1321,11 @@ def build_ky_report(ten, chuc_vu, tu, den, td, d, nhan_xet, phuong_huong):
 ten = cfg_get("ten", "Chưa đặt tên")
 chuc_vu = cfg_get("chuc_vu", "Chuyên viên")
 chuc_vu_day_du = cfg_get("chuc_vu_day_du", "") or chuc_vu
+ngay_sinh_cfg = cfg_get("ngay_sinh", "")
+chuc_vu_dang_cfg = cfg_get("chuc_vu_dang", "")
+chuc_vu_cq_cfg = cfg_get("chuc_vu_cq", "") or chuc_vu
+chuc_vu_dt_cfg = cfg_get("chuc_vu_dt", "")
+don_vi_ct_cfg = cfg_get("don_vi_ct", "") or "Ban Tuyên giáo Tỉnh ủy Tuyên Quang"
 
 with st.sidebar:
     st.markdown(f"### ⭐ TỈNH ỦY TUYÊN QUANG")
@@ -1254,11 +1594,12 @@ elif page == "🗓️ Nhiệm vụ tuần tới":
 elif page == "📄 Báo cáo & Xuất file":
     st.title("📄 Báo cáo & Xuất file")
 
-    tab1, tab2, tab3, tab4 = st.tabs([
+    tab1, tab2, tab3, tab4, tab5 = st.tabs([
         "📝 Mẫu Tổng hợp BC của CBCC VP (theo tuần)",
         "🗂️ Biểu 01: Phiếu tự đánh giá",
         "📊 Báo cáo tổng hợp theo kỳ",
         "🧾 Phiếu đánh giá chất lượng cán bộ",
+        "🏛️ Đánh giá cán bộ Quý III/2026 (CV 1619)",
     ])
 
     # ── TAB 1: Mẫu CBCC VP ──
@@ -1522,6 +1863,128 @@ elif page == "📄 Báo cáo & Xuất file":
                                 file_name=f"PhieuDanhGia_{ten.replace(' ', '_')}.docx",
                                 mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document")
 
+    # ── TAB 5: Đánh giá cán bộ theo Công văn 1619-CV/TU (Quý III/2026) ──
+    with tab5:
+        st.caption("Xuất file **.xlsx** đúng cấu trúc Bản tự đánh giá (MauDG) + Phụ lục 2 khối "
+                   "Đảng (PL2.khoiDang) theo Công văn 1619-CV/TU — hạn nộp **22/9/2026** qua "
+                   "Đ/c Lê Thanh Quỳnh. Số dòng nhiệm vụ tự giãn theo đúng số việc thực tế "
+                   "(không bị giới hạn như bảng mẫu gốc).")
+
+        today = datetime.date.today()
+        tu_cv, den_cv, td_cv = chon_ky("cv1619", today)
+        ky_label_cv = f"{td_cv}, Năm {den_cv.year}" if "Quý" in td_cv or "Tháng" in td_cv or "Tuần" in td_cv else td_cv
+        tasks_cv = db_query(tu_cv, den_cv)
+        st.info(f"Kỳ đã chọn có **{len(tasks_cv)}** công việc. Điền đủ Trục, Nhóm A/B, Nhóm độ "
+                f"khó cho từng việc ở bảng bên dưới trước khi xuất.")
+
+        with st.expander("👤 Thông tin cá nhân dùng cho Bản tự đánh giá (MauDG)", expanded=False):
+            st.caption("Các trường này lưu vào Cài đặt để dùng lại cho các kỳ sau.")
+            cA, cB = st.columns(2)
+            ngay_sinh_in = cA.text_input("Ngày sinh", value=ngay_sinh_cfg, placeholder="VD: 15/03/1990")
+            chuc_vu_dang_in = cB.text_input("Chức vụ Đảng", value=chuc_vu_dang_cfg, placeholder="VD: Đảng viên")
+            cC, cD = st.columns(2)
+            chuc_vu_cq_in = cC.text_input("Chức vụ chính quyền", value=chuc_vu_cq_cfg)
+            chuc_vu_dt_in = cD.text_input("Chức vụ đoàn thể", value=chuc_vu_dt_cfg, placeholder="VD: Đoàn viên Công đoàn")
+            don_vi_ct_in = st.text_input("Đơn vị công tác", value=don_vi_ct_cfg)
+            if st.button("💾 Lưu thông tin cá nhân"):
+                cfg_set("ngay_sinh", ngay_sinh_in.strip())
+                cfg_set("chuc_vu_dang", chuc_vu_dang_in.strip())
+                cfg_set("chuc_vu_cq", chuc_vu_cq_in.strip())
+                cfg_set("chuc_vu_dt", chuc_vu_dt_in.strip())
+                cfg_set("don_vi_ct", don_vi_ct_in.strip())
+                st.success("Đã lưu!")
+                st.rerun()
+
+        if tasks_cv:
+            st.markdown("**Điền thông tin KPI cho từng nhiệm vụ trong kỳ** — Trục, Nhóm A/B, Căn "
+                       "cứ giao việc, Số lượng kế hoạch, Nhóm độ khó (N1-N5), Số lượng thực tế, "
+                       "Hệ số chất lượng. Cột *Thời hạn*, *Ngày hoàn thành* và *Sản phẩm/kết quả* "
+                       "đã lấy sẵn từ công việc (sửa ở trang Quản lý công việc nếu cần).")
+            edit_df2 = pd.DataFrame([{
+                "id": t["id"],
+                "Nội dung": t["title"],
+                "Trạng thái": t["trang_thai"],
+                "Trục": t.get("truc") or TRUC_LIST[0],
+                "Nhóm": t.get("nhom_ab") or NHOM_AB[0],
+                "Căn cứ giao việc": t.get("can_cu_nv") or "",
+                "SL kế hoạch": t.get("so_luong_ke_hoach") or 1,
+                "Nhóm độ khó": t.get("nhom_kho") or "N2",
+                "SL thực tế": t.get("so_luong_thuc_te") if t.get("so_luong_thuc_te") is not None else (
+                    (t.get("so_luong_ke_hoach") or 1) if t["trang_thai"] == "Hoàn thành" else 0),
+                "Hệ số chất lượng": t.get("he_so_chat_luong") if t.get("he_so_chat_luong") is not None else 1.0,
+            } for t in tasks_cv])
+            edited2 = st.data_editor(
+                edit_df2, hide_index=True, use_container_width=True, key="cv1619_editor",
+                disabled=["id", "Nội dung", "Trạng thái"],
+                column_config={
+                    "id": None,
+                    "Trục": st.column_config.SelectboxColumn(options=TRUC_LIST),
+                    "Nhóm": st.column_config.SelectboxColumn(options=NHOM_AB),
+                    "SL kế hoạch": st.column_config.NumberColumn(min_value=1, step=1),
+                    "Nhóm độ khó": st.column_config.SelectboxColumn(options=NHOM_KHO_LIST),
+                    "SL thực tế": st.column_config.NumberColumn(min_value=0, step=1),
+                    "Hệ số chất lượng": st.column_config.SelectboxColumn(options=[v for _, v in HE_SO_CL_OPTS]),
+                })
+            st.caption("Gợi ý chọn Nhóm độ khó: " + " · ".join(f"**{k}** {v}" for k, v in NHOM_KHO_GOI_Y.items()))
+            if st.button("💾 Lưu các chỉnh sửa vào công việc", key="cv1619_save"):
+                for _, row in edited2.iterrows():
+                    db_sua(int(row["id"]), {
+                        "truc": row["Trục"],
+                        "nhom_ab": row["Nhóm"],
+                        "can_cu_nv": row["Căn cứ giao việc"] or None,
+                        "so_luong_ke_hoach": int(row["SL kế hoạch"]),
+                        "nhom_kho": row["Nhóm độ khó"],
+                        "so_luong_thuc_te": int(row["SL thực tế"]),
+                        "he_so_chat_luong": float(row["Hệ số chất lượng"]),
+                    })
+                st.success("Đã lưu! Bấm lại nút này sau khi sửa để số liệu KPI bên dưới cập nhật theo.")
+                st.rerun()
+
+            st.markdown("**Tỷ trọng điểm tối đa giữa 2 nhóm** (tự xác định, đảm bảo tổng = 100)")
+            cE, cF = st.columns(2)
+            diem_toi_da_a = cE.number_input("Điểm tối đa Nhóm A (thường xuyên)", min_value=0, max_value=100, value=70, key="cv1619_maxa")
+            diem_toi_da_b = cF.number_input("Điểm tối đa Nhóm B (trọng tâm, then chốt)", min_value=0, max_value=100,
+                                            value=100 - int(diem_toi_da_a), key="cv1619_maxb")
+            if diem_toi_da_a + diem_toi_da_b != 100:
+                st.warning(f"Tổng hiện tại: {diem_toi_da_a + diem_toi_da_b} — cần đúng bằng 100.")
+
+            ht_a_prev = [t for t in tasks_cv if (t.get("nhom_ab") or NHOM_AB[0]) == NHOM_AB[0]]
+            ht_b_prev = [t for t in tasks_cv if (t.get("nhom_ab") or NHOM_AB[0]) == NHOM_AB[1]]
+            kpi_a_prev, *_ = _cv1619_tinh_kpi(ht_a_prev)
+            kpi_b_prev, *_ = _cv1619_tinh_kpi(ht_b_prev)
+            diem_a_prev = kpi_a_prev * diem_toi_da_a
+            diem_b_prev = kpi_b_prev * diem_toi_da_b
+            cG, cH, cI = st.columns(3)
+            cG.metric("Điểm Nhóm A", f"{diem_a_prev:.1f} / {diem_toi_da_a}")
+            cH.metric("Điểm Nhóm B", f"{diem_b_prev:.1f} / {diem_toi_da_b}")
+            cI.metric("Tổng điểm", f"{diem_a_prev + diem_b_prev:.1f} / 100")
+
+            st.markdown("**Nhóm tiêu chí chung** (mục I của MauDG) — đánh dấu các tiêu chí **không** đảm bảo, để trống nếu tất cả đều đảm bảo")
+            all_items = [it for _, _, items in MAUDG_TIEUCHI for it in items]
+            khong_dam_bao = st.multiselect("Tiêu chí không đảm bảo", all_items, default=[], key="cv1619_kdb")
+
+            tong_diem_goiy = diem_a_prev + diem_b_prev
+            xl_options_cv = ["Hoàn thành xuất sắc nhiệm vụ", "Hoàn thành tốt nhiệm vụ",
+                             "Hoàn thành nhiệm vụ", "Không hoàn thành nhiệm vụ"]
+            xl_default_idx = 0 if tong_diem_goiy >= 90 else (1 if tong_diem_goiy >= 75 else (2 if tong_diem_goiy >= 50 else 3))
+            xep_loai_cv = st.selectbox("Cá nhân tự đề xuất mức xếp loại chất lượng", xl_options_cv,
+                                       index=xl_default_idx, key="cv1619_xl")
+
+            if st.button("⬇ Xuất file Excel — Đánh giá cán bộ Quý III/2026", type="primary"):
+                if diem_toi_da_a + diem_toi_da_b != 100:
+                    st.error("Vui lòng chỉnh lại Điểm tối đa Nhóm A + Nhóm B cho đúng bằng 100 trước khi xuất.")
+                else:
+                    thong_tin_cn = dict(ten=ten, ngay_sinh=ngay_sinh_cfg, chuc_vu_dang=chuc_vu_dang_cfg,
+                                        chuc_vu_cq=chuc_vu_cq_cfg, chuc_vu_dt=chuc_vu_dt_cfg, don_vi_ct=don_vi_ct_cfg)
+                    tasks_cv_fresh = db_query(tu_cv, den_cv)
+                    buf = build_cv1619_workbook(thong_tin_cn, tasks_cv_fresh, int(diem_toi_da_a), int(diem_toi_da_b),
+                                                khong_dam_bao, xep_loai_cv, f"{td_cv}, Năm {den_cv.year}")
+                    st.download_button("📥 Tải file .xlsx", data=buf,
+                                        file_name=f"DanhGiaCanBo_{td_cv.replace(' ', '_').replace('/', '_')}.xlsx",
+                                        mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+        else:
+            st.info("Chưa có công việc nào trong kỳ đã chọn — vào trang Quản lý công việc để thêm trước.")
+
 # ══════════════════════════════════════════════════════
 #  TRANG: CÀI ĐẶT
 # ══════════════════════════════════════════════════════
@@ -1533,6 +1996,9 @@ elif page == "⚙️ Cài đặt":
         "Chức vụ, đơn vị đầy đủ (dùng trong Biểu 01 — mục \"Chức vụ, đơn vị\")",
         value=chuc_vu_day_du, height=70,
         placeholder="VD: Chuyên viên Văn phòng Ban Tuyên giáo Tỉnh ủy Tuyên Quang.")
+    st.caption("Thông tin dùng riêng cho Bản tự đánh giá theo CV 1619 (ngày sinh, chức vụ Đảng/chính "
+              "quyền/đoàn thể, đơn vị công tác) — sửa ở tab **Đánh giá cán bộ Quý III/2026** trong "
+              "Báo cáo & Xuất file.")
     if st.button("💾 Lưu thay đổi", type="primary"):
         if not new_ten.strip():
             st.warning("Họ tên không được trống!")
