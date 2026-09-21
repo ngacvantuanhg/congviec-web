@@ -842,6 +842,37 @@ def build_phieu_danhgia_report(ten, chuc_vu_day_du, co_quan,
 # ══════════════════════════════════════════════════════
 #  ĐÁNH GIÁ CÁN BỘ THEO CÔNG VĂN 1619-CV/TU (mới, xuất .xlsx)
 # ══════════════════════════════════════════════════════
+# Gợi ý Trục theo từ khóa nội dung — chỉ là gợi ý ban đầu để đỡ phải gán tay
+# từng dòng, KHÔNG thay thế việc cá nhân tự rà soát lại (theo đúng tinh thần
+# "không chọn trục theo tên phòng hoặc chức danh" của Hướng dẫn CV 1619).
+_TRUC_TU_KHOA = [
+    ("Trục 3", ["ứng dụng", "app", "phần mềm", "chuyển đổi số", "công nghệ", "chat ai",
+                "trí tuệ nhân tạo", "zalo mini app", "website", "trang thông tin điện tử",
+                "hệ thống", "máy tính", "mạng", "dữ liệu", "cài đặt", "sửa máy", "bản quyền",
+                "chatbot", "kết nối điểm cầu", "kỹ thuật", "đường truyền", "phòng họp không giấy",
+                "cabinet", "sotaydangvien", "an toàn thông tin"]),
+    ("Trục 4", ["nâng lương", "phụ cấp", "chi bộ", "đảng viên", "sinh hoạt đảng",
+                "cán bộ, công chức", "cbcc", "tổ chức bộ máy", "bàn giao chức năng",
+                "nghị quyết số 57", "nghị quyết 57", "kiểm tra, giám sát", "biên bản họp xét",
+                "nhân sự", "quy định số 211", "quy chế làm việc", "thâm niên"]),
+    ("Trục 6", ["đoàn công tác", "châu ủy", "đối ngoại", "quốc phòng", "an ninh", "biên giới",
+                "hội nhập quốc tế"]),
+    ("Trục 5", ["du lịch", "khảo sát", "nhân dân", "văn hóa", "đời sống"]),
+    ("Trục 1", ["hội nghị", "tập huấn", "sơ kết", "tổng kết", "báo cáo công tác", "tuyên giáo",
+                "dân vận", "quán triệt", "tuyên truyền", "đăng tin bài", "fanpage",
+                "khẩu hiệu chào mừng"]),
+]
+
+def _goi_y_truc(title):
+    """Gợi ý Trục theo từ khóa trong tên nhiệm vụ; mặc định Trục 2 (thể chế,
+    tổ chức thực thi) nếu không khớp từ khóa nào — theo đúng hướng dẫn
+    'nhiệm vụ chủ yếu tập trung ở Trục 1, Trục 2 và Trục 4'."""
+    t = (title or "").lower()
+    for truc, kws in _TRUC_TU_KHOA:
+        if any(kw in t for kw in kws):
+            return truc
+    return "Trục 2"
+
 def _q_tien_do(thoi_han, ngay_hoan_thanh):
     """Hệ số tiến độ theo bảng Quy đổi: vượt/đúng hạn=1; chậm N ngày = 1-0.05N
     (tối đa trừ hết ở chậm 10 ngày); chậm trên 10 ngày hoặc chưa hoàn thành = 0."""
@@ -1032,6 +1063,9 @@ def build_cv1619_workbook(thong_tin_cn, tasks, diem_toi_da_a, diem_toi_da_b,
     _cell(ws, f"C{r0}", "", None, center, brd=True)
     _cell(ws, f"D{r0}", diem_toi_da_a + diem_toi_da_b, bold, center, brd=True)
     _cell(ws, f"E{r0}", round(tong_diem, 2), bold, center, brd=True)
+    r0 += 1
+    _cell(ws, f"A{r0}", "(Gửi kèm bảng chấm điểm, minh chứng sản phẩm cụ thể)", italic)
+    ws.merge_cells(f"A{r0}:E{r0}")
     r0 += 2
 
     _cell(ws, f"A{r0}", f"2. Cá nhân tự đề xuất mức xếp loại chất lượng: {xep_loai_de_xuat}", bold)
@@ -1042,6 +1076,26 @@ def build_cv1619_workbook(thong_tin_cn, tasks, diem_toi_da_a, diem_toi_da_b,
     r0 += 4
     _cell(ws, f"C{r0}", thong_tin_cn["ten"], bold, center)
     ws.merge_cells(f"C{r0}:E{r0}")
+    r0 += 5
+
+    _cell(ws, f"A{r0}", "3. Nhận xét, đánh giá và đề xuất mức xếp loại của cấp có thẩm quyền", bold)
+    ws.merge_cells(f"A{r0}:E{r0}")
+    r0 += 1
+    _cell(ws, f"A{r0}", "- Chấm điểm: ……………….........………; Đề xuất xếp loại: ……………………………")
+    ws.merge_cells(f"A{r0}:E{r0}")
+    r0 += 2
+    _cell(ws, f"A{r0}",
+          "- Mức độ đáp ứng đối với các mục tiêu, nhiệm vụ then chốt: …………………………………………\n"
+          "(Đánh giá rõ mức độ đáp ứng yêu cầu nhiệm vụ theo 3 mức: (1) Chủ động tiếp cận, giải quyết "
+          "hiệu quả vấn đề, có kết quả cụ thể; (2) Cơ bản đáp ứng yêu cầu nhưng còn hạn chế, cần tiếp "
+          "tục hoàn thiện; (3) Không đáp ứng yêu cầu nhiệm vụ)", None, wrap)
+    ws.merge_cells(f"A{r0}:E{r0}")
+    ws.row_dimensions[r0].height = 60
+    r0 += 3
+    _cell(ws, f"A{r0}", "XÁC NHẬN CỦA BAN THƯỜNG VỤ CẤP ỦY\nhoặc TẬP THỂ LÃNH ĐẠO CƠ QUAN, ĐƠN VỊ\n"
+                       "(Xác lập thời điểm, ký, ghi rõ họ tên và đóng dấu)", bold, center)
+    ws.merge_cells(f"A{r0}:E{r0}")
+    ws.row_dimensions[r0].height = 46
 
     # ── SHEET 2: PL2 (Phụ lục 2 khối Đảng) ──
     ws2 = wb.create_sheet("PL2.khoiDang")
@@ -1931,7 +1985,7 @@ elif page == "📄 Báo cáo & Xuất file":
                 "id": t["id"],
                 "Nội dung": t["title"],
                 "Trạng thái": t["trang_thai"],
-                "Trục": t.get("truc") or TRUC_LIST[0],
+                "Trục": t.get("truc") or _goi_y_truc(t["title"]),
                 "Nhóm": t.get("nhom_ab") or NHOM_AB[0],
                 "Căn cứ giao việc": t.get("can_cu_nv") or "",
                 "SL kế hoạch": t.get("so_luong_ke_hoach") or 1,
@@ -1953,6 +2007,16 @@ elif page == "📄 Báo cáo & Xuất file":
                     "Hệ số chất lượng": st.column_config.SelectboxColumn(options=[v for _, v in HE_SO_CL_OPTS]),
                 })
             st.caption("Gợi ý chọn Nhóm độ khó: " + " · ".join(f"**{k}** {v}" for k, v in NHOM_KHO_GOI_Y.items()))
+            _truc_counts = edited2["Trục"].value_counts().to_dict()
+            _truc_line = " · ".join(f"**{tc}**: {_truc_counts.get(tc, 0)} việc" for tc in TRUC_LIST)
+            _max_truc_share = max(_truc_counts.values()) / len(edited2) if len(edited2) else 0
+            if _max_truc_share >= 0.7 and len(edited2) >= 5:
+                st.warning(f"⚠️ Phân bổ theo Trục hiện tại: {_truc_line}. Phần lớn công việc đang dồn "
+                          "vào 1 trục — Trục chỉ gợi ý theo từ khóa, bạn cần rà soát lại đúng nội "
+                          "dung thực tế từng việc trước khi xuất (không chọn trục theo tên phòng "
+                          "hay chức danh).")
+            else:
+                st.caption(f"Phân bổ theo Trục hiện tại: {_truc_line}")
             if st.button("💾 Lưu các chỉnh sửa vào công việc", key="cv1619_save"):
                 for _, row in edited2.iterrows():
                     db_sua(int(row["id"]), {
