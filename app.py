@@ -160,26 +160,26 @@ HE_SO_CL_OPTS = [
 ]
 MAUDG_TIEUCHI = [
     (1, "Về phẩm chất chính trị, đạo đức, lối sống, thực hiện trách nhiệm nêu gương", [
-        "1.1. Tuyệt đối trung thành với Đảng, Tổ quốc và Nhân dân; kiên định chủ nghĩa Mác - Lênin, tư tưởng Hồ Chí Minh, mục tiêu độc lập dân tộc và chủ nghĩa xã hội.",
-        "1.2. Có tinh thần yêu nước sâu sắc, tận tụy phục vụ Nhân dân, sâu sát cơ sở, luôn hành động vì lợi ích của Nhân dân.",
-        "1.3. Chấp hành nghiêm chủ trương, đường lối, nghị quyết, chỉ thị, quy định, nguyên tắc tổ chức, kỷ luật của Đảng và pháp luật của Nhà nước.",
-        "1.4. Có tinh thần tự giác, trách nhiệm cao trong nghiên cứu, học tập chủ nghĩa Mác - Lênin, tư tưởng Hồ Chí Minh, các nghị quyết, chỉ thị của Đảng.",
-        "1.5. Có phẩm chất đạo đức, lối sống trong sáng, trung thực, khiêm tốn, chân thành, giản dị; không né tránh công việc, chạy theo thành tích.",
-        "1.6. Không tham vọng quyền lực; không chạy chức, chạy quyền; không tham nhũng, lãng phí, cơ hội, vụ lợi.",
-        "1.7. Có uy tín cao, tiêu biểu về phẩm chất đạo đức và phong cách công tác; là trung tâm đoàn kết.",
-        "1.8. Có tinh thần chủ động, đổi mới sáng tạo; phấn đấu vì mục tiêu phát triển của cơ quan, đơn vị.",
-        "1.9. Thực hiện việc kê khai và công khai tài sản, thu nhập theo quy định; báo cáo đầy đủ, trung thực với cấp trên khi được yêu cầu.",
+        "1.1. Tuyệt đối trung thành với Đảng, Tổ quốc và Nhân dân; kiên định chủ nghĩa Mác - Lênin, tư tưởng Hồ Chí Minh, mục tiêu độc lập dân tộc và chủ nghĩa xã hội. Có lập trường, quan điểm, bản lĩnh chính trị vững vàng; kiên quyết bảo vệ nền tảng tư tưởng, Cương lĩnh chính trị, đường lối của Đảng, Hiến pháp, pháp luật của Nhà nước; đấu tranh phản bác các quan điểm sai trái, thù địch, các biểu hiện suy thoái, \"tự diễn biến\", \"tự chuyển hoá\".",
+        "1.2. Có tinh thần yêu nước sâu sắc, tận tuỵ phục vụ Nhân dân, sâu sát cơ sở, luôn hành động vì lợi ích của Nhân dân. Đặt lợi ích của Đảng, quốc gia - dân tộc, Nhân dân, tập thể lên trên lợi ích cá nhân, sẵn sàng hy sinh vì sự nghiệp cách mạng của Đảng, vì độc lập, tự do của Tổ quốc, vì hạnh phúc của Nhân dân.",
+        "1.3. Chấp hành nghiêm chủ trương, đường lối, nghị quyết, chỉ thị, quy định, nguyên tắc tổ chức, kỷ luật của Đảng, nhất là nguyên tắc tập trung dân chủ, tự phê bình và phê bình; chấp hành nghiêm pháp luật của Nhà nước và quy định của cơ quan, đơn vị. Tuyệt đối chấp hành sự phân công của tổ chức, yên tâm công tác và hoàn thành tốt mọi nhiệm vụ được giao.",
+        "1.4. Có tinh thần tự giác, trách nhiệm cao trong nghiên cứu, học tập chủ nghĩa Mác - Lênin, tư tưởng Hồ Chí Minh, các nghị quyết, chỉ thị của Đảng và các chương trình bồi dưỡng, cập nhật kiến thức mới nhằm nâng cao trình độ về mọi mặt, đáp ứng yêu cầu, nhiệm vụ.",
+        "1.5. Có phẩm chất đạo đức, lối sống trong sáng, trung thực, khiêm tốn, chân thành, giản dị; cần, kiệm, liêm, chính, chí công vô tư; chấp hành nghiêm quy định về chuẩn mực đạo đức cách mạng của cán bộ, đảng viên trong giai đoạn mới, trách nhiệm nêu gương; không vi phạm Quy định về những điều đảng viên không được làm. Không né tránh công việc, chạy theo thành tích; không vi phạm đạo đức, lối sống đến mức bị xử lý kỷ luật.",
+        "1.6. Không tham vọng quyền lực; không chạy chức, chạy quyền; không tham nhũng, lãng phí, cơ hội, vụ lợi, cục bộ, lợi ích nhóm; không để gia đình, người thân và người khác lợi dụng chức vụ, vị trí công tác để trục lợi. Không có biểu hiện suy thoái về tư tưởng chính trị, đạo đức, lối sống, những biểu hiện \"tự diễn biến\", \"tự chuyển hoá\" trong nội bộ. Kiên quyết đấu tranh chống quan liêu, cửa quyền, tham nhũng, xa hoa, lãng phí, tiêu cực, chủ nghĩa cá nhân, lối sống cơ hội, thực dụng, bè phái, lợi ích nhóm, nói không đi đôi với làm.",
+        "1.7. Có uy tín cao, tiêu biểu về phẩm chất đạo đức và phong cách công tác; là trung tâm đoàn kết, thương yêu đồng chí, đồng nghiệp.",
+        "1.8. Có tinh thần chủ động, đổi mới sáng tạo; phấn đấu vì mục tiêu phát triển của cơ quan, đơn vị, đóng góp vào mục tiêu chung của đất nước.",
+        "1.9. Thực hiện việc kê khai và công khai tài sản, thu nhập theo quy định. Báo cáo đầy đủ, trung thực, cung cấp thông tin chính xác, khách quan về những nội dung liên quan đến việc thực hiện chức trách, nhiệm vụ được giao và hoạt động của cơ quan, tổ chức, đơn vị với cấp trên khi được yêu cầu.",
     ]),
     (2, "Tư duy đổi mới, chiến lược, khát vọng cống hiến, dám nghĩ, dám làm", [
-        "2.1. Có tư duy đổi mới, tầm nhìn chiến lược, phương pháp làm việc khoa học, nhạy bén chính trị.",
-        "2.2. Luôn bám sát thực tiễn, có nhiều cách làm hay, sáng tạo, đạt hiệu quả cao trong tổ chức thực hiện nhiệm vụ.",
-        "2.3. Nói đi đôi với làm, dám nghĩ, dám làm, dám chịu trách nhiệm, dám đột phá vì lợi ích chung.",
-        "2.4. Có khát vọng phấn đấu, cống hiến; có khả năng quy tụ và phát huy sức mạnh của tập thể.",
+        "2.1. Có tư duy đổi mới, tầm nhìn chiến lược, khả năng lãnh đạo, chỉ đạo thích ứng với sự phát triển của thời đại và xu thế toàn cầu hoá; phương pháp làm việc khoa học, nhạy bén chính trị; có năng lực cụ thể hoá trong lãnh đạo, chỉ đạo cơ quan, đơn vị thực hiện và hoàn thành tốt chức năng, nhiệm vụ được giao.",
+        "2.2. Luôn bám sát thực tiễn, có nhiều cách làm hay, sáng tạo, đạt hiệu quả cao trong lãnh đạo, chỉ đạo, tổ chức thực hiện nhiệm vụ; xây dựng cấp uỷ, tổ chức đảng trong sạch, vững mạnh, cơ quan, đơn vị vững mạnh toàn diện.",
+        "2.3. Nói đi đôi với làm, dám nghĩ, dám làm, dám chịu trách nhiệm, dám đột phá vì lợi ích chung. Có khả năng phân tích, dự báo tình hình, phát hiện những khó khăn, bất cập, thời cơ, thuận lợi trong thực tiễn; đề xuất hoặc quyết định những giải pháp phù hợp, kịp thời, hiệu quả.",
+        "2.4. Có khát vọng phấn đấu, cống hiến; có khả năng quy tụ và phát huy được sức mạnh của tập thể, cá nhân trong cơ quan, đơn vị và các cơ quan, đơn vị có liên quan.",
     ]),
     (3, "Về tự phê bình và phê bình, tự soi, tự sửa, khắc phục hạn chế, khuyết điểm", [
         "3.1. Chủ động, nghiêm túc thực hiện tự phê bình và phê bình, có tinh thần cầu thị và tiếp thu phản biện, góp ý.",
         "3.2. Có kế hoạch rõ ràng, quyết liệt trong khắc phục hạn chế, khuyết điểm đã được chỉ ra.",
-        "3.3. Kết quả khắc phục hoàn thành từ ≥ 80% nội dung, có tiến bộ rõ; không để tái diễn tồn tại.",
+        "3.3. Kết quả khắc phục hoàn thành từ ≥ 80% nội dung, có tiến bộ rõ, được tổ chức đánh giá tốt; không để tái diễn tồn tại.",
         "3.4. Tự soi, tự sửa trên tinh thần trách nhiệm chính trị cao, không né tránh, không đổ lỗi.",
     ]),
 ]
@@ -966,10 +966,15 @@ def build_cv1619_workbook(thong_tin_cn, tasks, diem_toi_da_a, diem_toi_da_b,
         r0 += 1
 
     r0 += 1
-    _cell(ws, f"A{r0}", "I. NHÓM TIÊU CHÍ CHUNG: tự đánh giá và đánh dấu X vào cột tương ứng", bold)
+    _cell(ws, f"A{r0}", "1. Tự đánh giá kết quả thực hiện nhiệm vụ: Trên cơ sở nhiệm vụ được giao, "
+                        "cá nhân tự đánh giá về kết quả thực hiện nhiệm vụ theo quý như sau:")
     ws.merge_cells(f"A{r0}:E{r0}")
     r0 += 1
-    heads = ["TT", "Tiêu chí/Nội dung", "Đảm bảo (X)", "Không đảm bảo (X)"]
+    _cell(ws, f"A{r0}", "I", bold)
+    _cell(ws, f"B{r0}", "NHÓM TIÊU CHÍ CHUNG: Các đồng chí tự đánh giá tiêu chí chung và đánh dấu X vào cột tương ứng", bold)
+    ws.merge_cells(f"B{r0}:E{r0}")
+    r0 += 1
+    heads = ["TT", "Tiêu chí/Nội dung", "Đảm bảo\n(Đánh dấu X)", "Không đảm bảo\n(Đánh dấu X)"]
     for i, h in enumerate(heads):
         c = _cell(ws, f"{get_column_letter(i+1)}{r0}", h, hdr_font, center, hdr_fill, True)
     ws.merge_cells(f"D{r0}:E{r0}")
@@ -992,7 +997,12 @@ def build_cv1619_workbook(thong_tin_cn, tasks, diem_toi_da_a, diem_toi_da_b,
             r0 += 1
 
     r0 += 1
-    _cell(ws, f"A{r0}", "II. NHÓM KẾT QUẢ THỰC HIỆN NHIỆM VỤ (chi tiết tại Phụ lục 2 — sheet PL2)", bold)
+    _cell(ws, f"A{r0}", "II", bold)
+    _cell(ws, f"B{r0}", "NHÓM KẾT QUẢ THỰC HIỆN NHIỆM VỤ: Có Phụ lục tiêu chí cho từng nhóm đối "
+                       "tượng, cá nhân tự đánh giá theo Phụ lục tương ứng kèm theo.", bold, wrap)
+    ws.merge_cells(f"B{r0}:E{r0}")
+    r0 += 1
+    _cell(ws, f"A{r0}", "Tự chấm điểm kết quả thực hiện nhiệm vụ. Trong đó (chi tiết tại Phụ lục 2 — sheet PL2.khoiDang):")
     ws.merge_cells(f"A{r0}:E{r0}")
     r0 += 1
     heads2 = ["TT", "Nhiệm vụ", "Điểm KPI", "Điểm tối đa", "Điểm đạt được"]
