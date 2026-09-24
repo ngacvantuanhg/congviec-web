@@ -2031,9 +2031,10 @@ elif page == "📄 Báo cáo & Xuất file":
                 st.success("Đã lưu! Bấm lại nút này sau khi sửa để số liệu KPI bên dưới cập nhật theo.")
                 st.rerun()
 
-            st.markdown("**Tỷ trọng điểm tối đa giữa 2 nhóm** (tự xác định, đảm bảo tổng = 100)")
+            st.markdown("**Tỷ trọng điểm tối đa giữa 2 nhóm** (mặc định theo chuẩn Ban Tổ chức Tỉnh ủy "
+                       "60/40 — có thể chỉnh nếu đơn vị bạn có hướng dẫn riêng khác, miễn tổng = 100)")
             cE, cF = st.columns(2)
-            diem_toi_da_a = cE.number_input("Điểm tối đa Nhóm A (thường xuyên)", min_value=0, max_value=100, value=70, key="cv1619_maxa")
+            diem_toi_da_a = cE.number_input("Điểm tối đa Nhóm A (thường xuyên)", min_value=0, max_value=100, value=60, key="cv1619_maxa")
             diem_toi_da_b = cF.number_input("Điểm tối đa Nhóm B (trọng tâm, then chốt)", min_value=0, max_value=100,
                                             value=100 - int(diem_toi_da_a), key="cv1619_maxb")
             if diem_toi_da_a + diem_toi_da_b != 100:
